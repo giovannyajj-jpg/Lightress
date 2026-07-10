@@ -1,0 +1,194 @@
+/* Importar una fuente limpia */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: white;
+    background-color: #111;
+    /* Cambia 'fondo.jpg' por la ruta de tu imagen de bosque oscuro */
+    background-image: url('fondo.jpg'); 
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.background-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.6); /* Oscurece el fondo para que resalte el texto */
+    z-index: 0;
+}
+
+.profile-container {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+}
+
+/* Foto de perfil */
+.profile-pic-wrapper {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    padding: 5px;
+    /* Efecto del borde rosa del diseño original */
+    background: linear-gradient(45deg, #ff9a9e, #fecfef, #111);
+    box-shadow: 0 0 20px rgba(255, 154, 158, 0.4);
+}
+
+.profile-pic {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #1a1a1a;
+}
+
+/* Textos principales */
+.username {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px rgba(255,255,255,0.8);
+    cursor: pointer;
+}
+
+.handles {
+    font-size: 14px;
+    color: #ccc;
+    margin-bottom: 15px;
+}
+
+.location {
+    font-size: 14px;
+    color: #ddd;
+    margin-bottom: 30px;
+}
+
+/* Widget Glassmorphism (Efecto Cristal) */
+.glass {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+}
+
+.status-widget {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    margin-bottom: 30px;
+    text-align: left;
+}
+
+.status-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.status-name {
+    font-weight: 600;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.status-time {
+    font-size: 12px;
+    color: #aaa;
+    margin-top: 3px;
+    font-style: italic;
+}
+
+/* Redes Sociales */
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 40px;
+}
+
+.glass-btn {
+    color: white;
+    font-size: 24px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.glass-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-3px);
+}
+
+/* Contador de vistas */
+.views-counter {
+    text-align: left;
+    font-size: 14px;
+    color: #aaa;
+}
+
+/* Animación de la nieve */
+.snowflakes {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.snowflake {
+    color: #fff;
+    font-size: 1em;
+    font-family: Arial, sans-serif;
+    text-shadow: 0 0 5px #000;
+    position: absolute;
+    top: -10vh;
+    animation: fall linear infinite, sway ease-in-out infinite alternate;
+}
+
+/* Diferentes posiciones y velocidades para los copos de nieve */
+.snowflake:nth-child(1) { left: 10%; animation-duration: 10s, 3s; }
+.snowflake:nth-child(2) { left: 20%; animation-duration: 12s, 4s; font-size: 1.2em; }
+.snowflake:nth-child(3) { left: 30%; animation-duration: 8s, 2.5s; }
+.snowflake:nth-child(4) { left: 40%; animation-duration: 15s, 5s; font-size: 0.8em;}
+.snowflake:nth-child(5) { left: 50%; animation-duration: 11s, 3.5s; }
+.snowflake:nth-child(6) { left: 60%; animation-duration: 9s, 3s; font-size: 1.5em;}
+.snowflake:nth-child(7) { left: 70%; animation-duration: 13s, 4.5s; }
+.snowflake:nth-child(8) { left: 80%; animation-duration: 14s, 4s; font-size: 0.9em;}
+.snowflake:nth-child(9) { left: 90%; animation-duration: 10s, 3s; }
+
+@keyframes fall {
+    0% { top: -10vh; }
+    100% { top: 100vh; }
+}
+
+@keyframes sway {
+    0% { transform: translateX(0px); }
+    100% { transform: translateX(20px); }
+}
+
