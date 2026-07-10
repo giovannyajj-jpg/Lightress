@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SBACKUPS | PocketMine Advanced Hub</title>
+    <title>SBACKUPS | Real Cloud Database</title>
     <style>
         :root {
             --primary: #00d2ff;
@@ -18,298 +18,124 @@
             --accent-gold: #ffd700;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow-x: hidden;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: var(--bg-dark); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
         .app-page { display: flex; flex-direction: column; min-height: 100vh; width: 100%; }
         .hidden { display: none !important; }
 
-        /* NAVBAR PREMIUM */
         header {
-            background: rgba(10, 16, 31, 0.85);
-            backdrop-filter: blur(16px);
-            border-bottom: 1px solid rgba(0, 210, 255, 0.1);
-            padding: 15px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 15px;
-            position: sticky; top: 0; z-index: 100;
+            background: rgba(10, 16, 31, 0.85); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(0, 210, 255, 0.1);
+            padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; gap: 15px; position: sticky; top: 0; z-index: 100;
         }
-
-        .logo {
-            font-weight: 900;
-            font-size: 1.4rem;
-            letter-spacing: 1.5px;
-            color: #fff;
-            text-shadow: 0 0 12px var(--primary-glow);
-        }
+        .logo { font-weight: 900; font-size: 1.4rem; letter-spacing: 1.5px; color: #fff; text-shadow: 0 0 12px var(--primary-glow); }
         .logo span { color: var(--primary); }
+        .nav-right { display: flex; align-items: center; gap: 15px; }
 
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
+        .user-nav-box { display: flex; align-items: center; gap: 10px; background: var(--bg-input); padding: 5px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); }
+        .pfp-mini { width: 25px; height: 25px; border-radius: 50%; object-fit: cover; background: #2a354d; }
+        .menu-dots-btn { background: none; border: none; color: #fff; font-size: 1.6rem; cursor: pointer; padding: 0 5px; }
 
-        .user-nav-box {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: var(--bg-input);
-            padding: 5px 12px;
-            border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .pfp-mini {
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            object-fit: cover;
-            background: #2a354d;
-        }
-
-        .menu-dots-btn {
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 1.6rem;
-            cursor: pointer;
-            padding: 0 5px;
-            transition: color 0.2s;
-        }
-        .menu-dots-btn:hover { color: var(--primary); }
-
-        /* HERO */
-        .hero {
-            text-align: center;
-            padding: 25px 20px 10px 20px;
-            background: radial-gradient(circle at top, var(--primary-glow) 0%, transparent 60%);
-        }
+        .hero { text-align: center; padding: 25px 20px 10px 20px; background: radial-gradient(circle at top, var(--primary-glow) 0%, transparent 60%); }
         .typing-container { font-size: 2.2rem; font-weight: 900; }
-        .typing-text {
-            color: var(--primary);
-            border-right: 3px solid var(--primary);
-            white-space: nowrap; overflow: hidden; display: inline-block;
-            animation: typing 2.5s steps(8, end) infinite alternate, blink 0.75s step-end infinite;
-        }
+        .typing-text { color: var(--primary); border-right: 3px solid var(--primary); white-space: nowrap; overflow: hidden; display: inline-block; animation: typing 2.5s steps(8, end) infinite alternate, blink 0.75s step-end infinite; }
         @keyframes typing { from { width: 0 } to { width: 100% } }
         @keyframes blink { from, to { border-color: transparent } 50% { border-color: var(--primary) } }
 
-        /* DASHBOARD GRID */
-        .dashboard {
-            max-width: 1200px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 15px;
-            display: grid;
-            grid-template-columns: 360px 1fr;
-            gap: 20px;
-            flex: 1;
-        }
+        .dashboard { max-width: 1200px; width: 100%; margin: 0 auto; padding: 15px; display: grid; grid-template-columns: 360px 1fr; gap: 20px; flex: 1; }
+        @media (max-width: 900px) { .dashboard { grid-template-columns: 1fr; } }
 
-        @media (max-width: 900px) {
-            .dashboard { grid-template-columns: 1fr; }
-        }
-
-        .glass-panel {
-            background: var(--bg-panel);
-            border: 1px solid rgba(255, 255, 255, 0.02);
-            border-radius: 14px;
-            padding: 20px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-            height: fit-content;
-        }
-
-        .glass-panel h3 {
-            font-size: 1.15rem;
-            color: #fff;
-            margin-bottom: 15px;
-            border-left: 4px solid var(--primary);
-            padding-left: 8px;
-        }
-
+        .glass-panel { background: var(--bg-panel); border: 1px solid rgba(255, 255, 255, 0.02); border-radius: 14px; padding: 20px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); height: fit-content; }
+        .glass-panel h3 { font-size: 1.15rem; color: #fff; margin-bottom: 15px; border-left: 4px solid var(--primary); padding-left: 8px; }
         .form-group { display: flex; flex-direction: column; gap: 12px; }
 
-        input, select, textarea {
-            background: var(--bg-input);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 11px;
-            border-radius: 8px;
-            color: #fff;
-            outline: none;
-            font-size: 0.9rem;
-        }
-        input:focus, select:focus, textarea:focus { border-color: var(--primary); }
-
-        .dynamic-upload-zone {
-            background: rgba(0, 210, 255, 0.01);
-            border: 2px dashed rgba(0, 210, 255, 0.2);
-            border-radius: 10px;
-            padding: 20px 10px;
-            text-align: center;
-            cursor: pointer;
-            position: relative;
-        }
-        .dynamic-upload-zone input[type="file"] { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
-
-        .auth-btn {
-            background: linear-gradient(135deg, var(--primary), #0077ff);
-            color: #040712; border: none; padding: 10px 16px; border-radius: 8px;
-            font-weight: 700; cursor: pointer; font-size: 0.85rem; transition: all 0.2s;
-        }
+        input, select, textarea { background: var(--bg-input); border: 1px solid rgba(255, 255, 255, 0.05); padding: 11px; border-radius: 8px; color: #fff; outline: none; font-size: 0.9rem; }
+        .auth-btn { background: linear-gradient(135deg, var(--primary), #0077ff); color: #040712; border: none; padding: 10px 16px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; text-align: center;}
         .auth-btn:hover { transform: translateY(-1px); box-shadow: 0 0 12px var(--primary); }
 
-        /* FEED & TABLAS */
         .forum-tabs { display: flex; gap: 8px; margin-bottom: 15px; overflow-x: auto; padding-bottom: 5px; }
-        .tab-btn {
-            background: var(--bg-panel); color: var(--text-muted); border: 1px solid rgba(255, 255, 255, 0.02);
-            padding: 8px 14px; border-radius: 6px; cursor: pointer; font-weight: 600; white-space: nowrap;
-        }
+        .tab-btn { background: var(--bg-panel); color: var(--text-muted); border: 1px solid rgba(255, 255, 255, 0.02); padding: 8px 14px; border-radius: 6px; cursor: pointer; font-weight: 600; }
         .tab-btn.active, .tab-btn:hover { color: #fff; background: var(--primary); }
 
         .feed-section { display: none; }
         .feed-section.active { display: flex; flex-direction: column; gap: 12px; }
-
-        .archive-card {
-            background: var(--bg-panel); border-radius: 12px; padding: 18px;
-            border: 1px solid rgba(255, 255, 255, 0.01); display: flex; flex-direction: column; gap: 10px;
-            position: relative;
-        }
-
-        .card-header { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
-        
+        .archive-card { background: var(--bg-panel); border-radius: 12px; padding: 18px; border: 1px solid rgba(255, 255, 255, 0.01); display: flex; flex-direction: column; gap: 10px; }
+        .card-header { display: flex; justify-content: space-between; align-items: center; }
         .uploader-badge { background: rgba(0, 210, 255, 0.1); color: var(--primary); font-size: 0.75rem; padding: 3px 8px; border-radius: 4px; }
         .admin-badge { background: rgba(255, 74, 74, 0.15) !important; color: var(--accent-red) !important; border: 1px solid var(--accent-red); }
-
-        .card-desc { color: #94a3b8; font-size: 0.9rem; line-height: 1.4; }
+        .card-desc { color: #94a3b8; font-size: 0.9rem; }
         .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.02); padding-top: 10px; }
-        
         .dl-btn { background: #101f38; color: var(--primary); border: 1px solid var(--primary); padding: 6px 14px; border-radius: 6px; text-decoration: none; font-weight: 700; font-size: 0.85rem; }
-        .delete-btn { background: rgba(255, 74, 74, 0.1); color: var(--accent-red); border: 1px solid var(--accent-red); padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; margin-left: 10px;}
+        .delete-btn { background: rgba(255, 74, 74, 0.1); color: var(--accent-red); border: 1px solid var(--accent-red); padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; }
 
-        /* SIDEBAR DE CONFIGURACIÓN Y CHAT (LOS 3 PUNTOS) */
-        .sidebar {
-            position: fixed; top: 0; right: -100%; width: 380px; height: 100vh;
-            background: var(--bg-panel); border-left: 1px solid rgba(0, 210, 255, 0.1);
-            box-shadow: -10px 0 30px rgba(0,0,0,0.6); z-index: 200;
-            display: flex; flex-direction: column; transition: right 0.3s cubic-bezier(0.1, 0.9, 0.2, 1);
-        }
+        .sidebar { position: fixed; top: 0; right: -100%; width: 380px; height: 100vh; background: var(--bg-panel); border-left: 1px solid rgba(0, 210, 255, 0.1); box-shadow: -10px 0 30px rgba(0,0,0,0.6); z-index: 200; display: flex; flex-direction: column; transition: right 0.3s; }
         .sidebar.open { right: 0; }
-        
         .sidebar-header { padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; }
         .sidebar-tabs { display: flex; background: var(--bg-dark); padding: 5px; margin: 10px 20px; border-radius: 8px; }
-        .sidebar-tab-btn { flex: 1; background: none; border: none; color: var(--text-muted); padding: 8px; cursor: pointer; font-weight: bold; border-radius: 6px; }
-        .sidebar-tab-btn.active { background: var(--bg-input); color: #fff; }
+        .sidebar-tab-btn { flex: 1; background: none; border: none; color: var(--text-muted); padding: 8px; cursor: pointer; font-weight: bold; }
+        .sidebar-tab-btn.active { background: var(--bg-input); color: #fff; border-radius: 6px; }
         .sidebar-body { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
 
-        /* CHAT MUNDIAL INTERNO */
-        .chat-container { display: flex; flex-direction: column; height: 100%; }
-        .chat-messages { flex: 1; background: var(--bg-dark); border-radius: 8px; padding: 10px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; max-height: 320px; }
-        .chat-msg { font-size: 0.85rem; line-height: 1.4; background: rgba(255,255,255,0.02); padding: 6px 10px; border-radius: 6px; }
-        .chat-msg strong { color: var(--primary); }
-        .chat-input-box { display: flex; gap: 8px; margin-top: 10px; }
-
-        /* PERFIL DETALLADO */
-        .profile-card { text-align: center; background: var(--bg-dark); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.02); }
-        .pfp-large { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; border: 2px solid var(--primary); }
+        .chat-messages { flex: 1; background: var(--bg-dark); border-radius: 8px; padding: 10px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; max-height: 400px; }
+        .chat-msg { font-size: 0.85rem; background: rgba(255,255,255,0.02); padding: 6px 10px; border-radius: 6px; }
+        .profile-card { text-align: center; background: var(--bg-dark); padding: 15px; border-radius: 12px; }
+        .pfp-large { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
         .stat-item { background: var(--bg-input); padding: 8px; border-radius: 6px; font-size: 0.8rem; }
-        .stat-item span { display: block; font-size: 1rem; font-weight: bold; color: var(--accent-gold); }
+        .stat-item span { display: block; font-size: 1rem; color: var(--accent-gold); font-weight: bold; }
 
-        /* AUTENTICACIÓN MEJORADA COMPLETA */
         .auth-fullscreen { background-color: var(--bg-dark); width: 100vw; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; position: fixed; top: 0; left: 0; z-index: 1000; }
-        .auth-box { background: var(--bg-panel); border: 1px solid rgba(0, 210, 255, 0.2); border-radius: 16px; padding: 30px; width: 100%; max-width: 400px; box-shadow: 0 0 40px rgba(0, 210, 255, 0.15); }
+        .auth-box { background: var(--bg-panel); border: 1px solid rgba(0, 210, 255, 0.2); border-radius: 16px; padding: 30px; width: 100%; max-width: 400px; }
         .auth-tabs { display: flex; gap: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 20px; }
         .auth-tab { background: none; border: none; color: var(--text-muted); font-size: 1.1rem; font-weight: 700; padding-bottom: 8px; cursor: pointer; }
         .auth-tab.active { color: #fff; border-bottom: 2px solid var(--primary); }
-
-        /* RESPONSIVE CONTROL */
         @media (max-width: 400px) { .sidebar { width: 100vw; } }
     </style>
 </head>
 <body>
 
-    <!-- PORTAL PRINCIPAL -->
     <div id="mainPage" class="app-page">
         <header>
             <div class="logo">S<span>BACKUPS</span></div>
             <div class="nav-right">
-                <button class="auth-btn" id="loginTrigger" onclick="navigateTo('authPage')">Ingresar / Crear Cuenta</button>
+                <button class="auth-btn" id="loginTrigger" onclick="navigateTo('authPage')">Ingresar / Registrarse</button>
                 <div class="user-nav-box hidden" id="userBox">
-                    <img src="https://i.imgur.com/8Km9tLL.png" class="pfp-mini" id="myNavPfp">
-                    <span id="myNavName" style="font-size:0.85rem; font-weight:700;">Invitado</span>
+                    <img src="" class="pfp-mini" id="myNavPfp">
+                    <span id="myNavName" style="font-size:0.85rem; font-weight:700;"></span>
                 </div>
                 <button class="menu-dots-btn" onclick="toggleSidebar(true)">⋮</button>
             </div>
         </header>
 
-        <!-- PANEL DE ADMINISTRADOR EXCLUSIVO PARA ASTRX -->
+        <!-- PANEL ADMIN PARA ASTRX -->
         <div id="adminPanel" class="glass-panel hidden" style="max-width:1200px; width:calc(100% - 30px); margin: 15px auto 0 auto; border: 1px dashed var(--accent-red);">
-            <h3 style="color: var(--accent-red); border-left-color: var(--accent-red);">🛡️ Panel de Control Global Administrativo (Astrx)</h3>
-            <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
-                <p style="font-size:0.85rem; color:var(--text-muted);">Asignar rango rápido:</p>
-                <input type="text" id="targetUserRole" placeholder="Nombre del usuario" style="padding:5px 10px; font-size:0.8rem;">
-                <select id="selectedRole" style="padding:5px; font-size:0.8rem;">
-                    <option value="Usuario">Usuario Estándar</option>
-                    <option value="Moderador">Moderador</option>
-                    <option value="VIP">Miembro VIP</option>
-                    <option value="Administrador">Administrador</option>
-                </select>
-                <button class="auth-btn" style="padding:6px 12px; background:var(--accent-red); color:#fff;" onclick="modifyUserRole()">Aplicar Rango</button>
-            </div>
+            <h3 style="color: var(--accent-red); border-left-color: var(--accent-red);">🛡️ Panel Global Administrativo (Astrx)</h3>
+            <p style="font-size: 0.85rem; color:var(--text-muted);">Como Administrador principal de SBACKUPS, tienes el poder de borrar cualquier archivo o servidor directamente desde las tarjetas de abajo en tiempo real.</p>
         </div>
 
         <div class="hero">
             <div class="typing-container"><span class="typing-text">SBACKUPS</span></div>
-            <p style="color: var(--text-muted); font-size: 0.9rem;">Plataforma Cloud Segura Adaptada para v0.14.x y v0.15.10</p>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Cloud Database en Vivo a través de Google Sheets</p>
         </div>
 
         <div class="dashboard">
-            <!-- PANEL DE PUBLICACIÓN -->
             <div class="glass-panel">
-                <h3>Subir Aporte / Servidor</h3>
+                <h3>Publicar Contenido</h3>
                 <div class="form-group">
                     <input type="text" id="postTitle" placeholder="Título o Nombre del Servidor">
-                    <select id="postCategory" onchange="toggleFormFields()">
+                    <select id="postCategory">
                         <option value="plugins">🔌 Plugins (.phar / .zip)</option>
                         <option value="mapas">🗺️ Mapas & Mundos</option>
                         <option value="cores">📦 Cores Estables</option>
                         <option value="servidores">🖥️ Servidor Minecraft PE</option>
                     </select>
+                    <textarea id="postDesc" rows="3" placeholder="Descripción..."></textarea>
+                    
+                    <input type="text" id="postLink" placeholder="Enlace de descarga (Google Drive / Directo)">
 
-                    <textarea id="postDesc" rows="3" placeholder="Descripción clara del contenido..."></textarea>
-
-                    <div class="dynamic-upload-zone" id="fileZone">
-                        <span style="font-size: 1.5rem;">🚀</span><br>
-                        <span id="uploadLabel" style="font-weight: 700; color: var(--primary); font-size: 0.85rem;">Seleccionar archivo</span>
-                        <input type="file" id="uploadFile" onchange="handleFileSelect()">
-                    </div>
-
-                    <div id="serverFields" class="form-group hidden">
-                        <input type="text" id="serverIP" placeholder="IP del Servidor (ej: play.lightstress.net)">
-                        <input type="text" id="serverPort" placeholder="Puerto (ej: 19132)" value="19132">
-                    </div>
-
-                    <button class="auth-btn" style="padding: 11px;" onclick="publishPost()">Publicar en SBACKUPS</button>
+                    <button class="auth-btn" style="padding: 11px;" onclick="publishPost()">Publicar en la Base de Datos</button>
                 </div>
             </div>
 
-            <!-- FEED PRINCIPAL -->
             <div>
                 <div class="forum-tabs">
                     <button class="tab-btn active" onclick="switchTab('plugins')">Plugins</button>
@@ -317,7 +143,6 @@
                     <button class="tab-btn" onclick="switchTab('cores')">Cores</button>
                     <button class="tab-btn" onclick="switchTab('servidores')">Servidores</button>
                 </div>
-
                 <div id="plugins" class="feed-section active"></div>
                 <div id="mapas" class="feed-section"></div>
                 <div id="cores" class="feed-section"></div>
@@ -326,178 +151,87 @@
         </div>
     </div>
 
-    <!-- PÁGINA DE AUTENTICACIÓN COMPLETA (LOGIN VS REGISTER SEPARADOS) -->
+    <!-- AUTHENTICATION -->
     <div id="authPage" class="auth-fullscreen hidden">
         <div class="auth-box">
             <div class="auth-tabs">
-                <button class="auth-tab active" id="tabLogin" onclick="switchAuthMode('login')">Iniciar Sesión</button>
+                <button class="auth-tab active" id="tabLogin" onclick="switchAuthMode('login')">Login</button>
                 <button class="auth-tab" id="tabRegister" onclick="switchAuthMode('register')">Registrarse</button>
             </div>
-            
             <div class="form-group">
                 <input type="text" id="authUsername" placeholder="Nombre de usuario">
                 <input type="password" id="authPassword" placeholder="Contraseña">
                 <div id="registerOnlyFields" class="form-group hidden">
-                    <input type="text" id="authPfp" placeholder="Enlace de Foto de Perfil (Opcional)">
+                    <input type="text" id="authPfp" placeholder="Enlace de Imagen de Perfil (Opcional)">
                 </div>
-                
-                <button class="auth-btn" style="padding: 12px; margin-top: 5px;" id="authSubmitBtn" onclick="executeAuth()">Ingresar</button>
-                <button class="tab-btn" style="padding: 10px; background: transparent;" onclick="navigateTo('mainPage')">← Volver al Portal</button>
+                <button class="auth-btn" id="authSubmitBtn" onclick="executeAuth()">Ingresar</button>
+                <button class="tab-btn" style="background:transparent;" onclick="navigateTo('mainPage')">Cancelar</button>
             </div>
         </div>
     </div>
 
-    <!-- SIDEBAR FLOTANTE MULTIFUNCIONAL (3 PUNTOS) -->
+    <!-- SIDEBAR -->
     <div id="sideMenu" class="sidebar">
         <div class="sidebar-header">
-            <h3 style="color:#fff; font-size:1.1rem;">Menú de Comunidad</h3>
+            <h3 style="color:#fff;">Comunidad</h3>
             <button class="menu-dots-btn" onclick="toggleSidebar(false)">×</button>
         </div>
-        
         <div class="sidebar-tabs">
             <button class="sidebar-tab-btn active" id="sbTabChat" onclick="switchSidebarTab('chat')">💬 Chat</button>
             <button class="sidebar-tab-btn" id="sbTabProfile" onclick="switchSidebarTab('perfil')">⚙️ Perfil</button>
         </div>
-
         <div class="sidebar-body" id="sidebarChatBox">
-            <div class="chat-container">
-                <div class="chat-messages" id="chatWindow">
-                    <div class="chat-msg"><strong>[Sistema]:</strong> ¡Bienvenidos al chat global de SBACKUPS!</div>
-                </div>
-                <div class="chat-input-box">
-                    <input type="text" id="chatMsgInput" placeholder="Escribe un mensaje..." style="flex:1; padding:8px;">
-                    <button class="auth-btn" style="padding:8px 12px;" onclick="sendGlobalMessage()">Enviar</button>
-                </div>
+            <div class="chat-messages" id="chatWindow"></div>
+            <div style="display:flex; gap:5px; margin-top:10px;">
+                <input type="text" id="chatMsgInput" placeholder="Escribe al mundo..." style="flex:1;">
+                <button class="auth-btn" onclick="sendGlobalMessage()">Enviar</button>
             </div>
         </div>
-
         <div class="sidebar-body hidden" id="sidebarProfileBox">
             <div class="profile-card">
-                <img src="https://i.imgur.com/8Km9tLL.png" class="pfp-large" id="profileCardPfp">
-                <h4 id="profileCardName" style="font-size:1.2rem;">Invitado</h4>
-                <p id="profileCardRole" style="font-size:0.75rem; color:var(--primary); font-weight:bold;">Usuario</p>
-                
+                <img src="" class="pfp-large" id="profileCardPfp">
+                <h4 id="profileCardName">Invitado</h4>
+                <p id="profileCardRole" style="color:var(--primary); font-size:0.8rem; font-weight:bold;"></p>
                 <div class="stats-grid">
                     <div class="stat-item">Nivel <span id="statLevel">1</span></div>
-                    <div class="stat-item">Estrellas <span id="statStars">⭐ 0</span></div>
-                    <div class="stat-item">Puntuación <span id="statScore">100</span></div>
-                    <div class="stat-item">Publicados <span id="statCount">0</span></div>
+                    <div class="stat-item">Estrellas <span id="statStars">0</span></div>
+                    <div class="stat-item">Score <span id="statScore">0</span></div>
+                    <div class="stat-item">Posteos <span id="statCount">0</span></div>
                 </div>
-            </div>
-
-            <div class="form-group" style="background:var(--bg-dark); padding:15px; border-radius:10px;">
-                <p style="font-size:0.8rem; color:var(--text-muted); font-weight:bold;">EDITAR PERFIL</p>
-                <input type="text" id="editName" placeholder="Nuevo Nombre de Usuario">
-                <input type="text" id="editPfp" placeholder="Nuevo Enlace de Foto de Perfil">
-                <button class="auth-btn" style="padding:8px;" onclick="updateProfileSettings()">Guardar Cambios</button>
             </div>
         </div>
     </div>
 
     <script>
-        let sessionUser = { name: "Invitado", role: "Usuario", pfp: "https://i.imgur.com/8Km9tLL.png", level: 1, stars: 0, score: 100, uploads: 0 };
+        // URL de tu Apps Script vinculada e integrada exitosamente en vivo
+        const API_URL = "https://script.google.com/macros/s/AKfycbys9RVNF_JhuEKvWlUPOwEpPSyueydSeOb0z-fw-MgjcXkzMzVeZ476v_u4CmN301U/exec"; 
+
+        let sessionUser = { name: "Invitado", role: "Usuario", pfp: "https://i.imgur.com/8Km9tLL.png", level:1, stars:0, score:100, uploads:0 };
         let currentAuthMode = 'login';
 
-        function navigateTo(pageId) {
+        window.onload = function() {
+            loadCloudData();
+            setInterval(loadCloudData, 6000); 
+        };
+
+        function navigateTo(id) {
             document.querySelectorAll('.app-page, .auth-fullscreen').forEach(p => p.classList.add('hidden'));
-            document.getElementById(pageId).classList.remove('hidden');
+            document.getElementById(id).classList.remove('hidden');
         }
 
-        function toggleSidebar(open) {
-            document.getElementById('sideMenu').classList.toggle('open', open);
-        }
-
+        function toggleSidebar(open) { document.getElementById('sideMenu').classList.toggle('open', open); }
         function switchAuthMode(mode) {
             currentAuthMode = mode;
             document.getElementById('tabLogin').classList.toggle('active', mode === 'login');
             document.getElementById('tabRegister').classList.toggle('active', mode === 'register');
             document.getElementById('registerOnlyFields').classList.toggle('hidden', mode === 'login');
-            document.getElementById('authSubmitBtn').innerText = mode === 'login' ? 'Ingresar' : 'Registrarse y Crear Cuenta';
+            document.getElementById('authSubmitBtn').innerText = mode === 'login' ? 'Ingresar' : 'Crear Cuenta Gratis';
         }
-
         function switchSidebarTab(tab) {
             document.getElementById('sbTabChat').classList.toggle('active', tab === 'chat');
             document.getElementById('sbTabProfile').classList.toggle('active', tab === 'perfil');
             document.getElementById('sidebarChatBox').classList.toggle('hidden', tab !== 'chat');
             document.getElementById('sidebarProfileBox').classList.toggle('hidden', tab !== 'perfil');
-        }
-
-        function executeAuth() {
-            const username = document.getElementById('authUsername').value.trim();
-            if(!username) { alert("Ingresa un usuario"); return; }
-
-            sessionUser.name = username;
-            
-            // Asignación estricta de cuenta Administradora para Astrx
-            if(username.toLowerCase() === 'astrx') {
-                sessionUser.role = "Administrador";
-                sessionUser.stars = 99;
-                sessionUser.level = 50;
-                sessionUser.score = 9999;
-                document.getElementById('adminPanel').classList.remove('hidden');
-            } else {
-                sessionUser.role = "Usuario";
-                document.getElementById('adminPanel').classList.add('hidden');
-            }
-
-            const customPfp = document.getElementById('authPfp').value.trim();
-            if(customPfp) sessionUser.pfp = customPfp;
-
-            // Sincronizar UI
-            document.getElementById('loginTrigger').classList.add('hidden');
-            document.getElementById('userBox').classList.remove('hidden');
-            document.getElementById('myNavName').innerText = sessionUser.name;
-            document.getElementById('myNavPfp').src = sessionUser.pfp;
-
-            updateProfileCardUI();
-            navigateTo('mainPage');
-        }
-
-        function updateProfileSettings() {
-            const newName = document.getElementById('editName').value.trim();
-            const newPfp = document.getElementById('editPfp').value.trim();
-
-            if(newName) {
-                sessionUser.name = newName;
-                document.getElementById('myNavName').innerText = newName;
-                // Control dinámico si cambia de nombre a admin
-                if(newName.toLowerCase() === 'astrx') {
-                    sessionUser.role = "Administrador";
-                    document.getElementById('adminPanel').classList.remove('hidden');
-                }
-            }
-            if(newPfp) {
-                sessionUser.pfp = newPfp;
-                document.getElementById('myNavPfp').src = newPfp;
-            }
-
-            updateProfileCardUI();
-            alert("Perfil actualizado de manera asíncrona.");
-        }
-
-        function updateProfileCardUI() {
-            document.getElementById('profileCardName').innerText = sessionUser.name;
-            document.getElementById('profileCardRole').innerText = sessionUser.role;
-            document.getElementById('profileCardPfp').src = sessionUser.pfp;
-            document.getElementById('statLevel').innerText = sessionUser.level;
-            document.getElementById('statStars').innerText = "⭐ " + sessionUser.stars;
-            document.getElementById('statScore').innerText = sessionUser.score;
-            document.getElementById('statCount').innerText = sessionUser.uploads;
-        }
-
-        function toggleFormFields() {
-            const cat = document.getElementById('postCategory').value;
-            document.getElementById('fileZone').classList.toggle('hidden', cat === 'servidores');
-            document.getElementById('serverFields').classList.toggle('hidden', cat !== 'servidores');
-        }
-
-        function handleFileSelect() {
-            const input = document.getElementById('uploadFile');
-            const label = document.getElementById('uploadLabel');
-            if(input.files.length > 0) {
-                label.innerText = "✓ " + input.files[0].name;
-                label.style.color = "var(--accent-green)";
-            }
         }
 
         function switchTab(category) {
@@ -507,124 +241,151 @@
             document.getElementById(category).classList.add('active');
         }
 
+        function updateUI() {
+            if(sessionUser.name !== "Invitado") {
+                document.getElementById('loginTrigger').classList.add('hidden');
+                document.getElementById('userBox').classList.remove('hidden');
+                document.getElementById('myNavName').innerText = sessionUser.name;
+                document.getElementById('myNavPfp').src = sessionUser.pfp;
+                
+                if(sessionUser.name.toLowerCase() === 'astrx') {
+                    sessionUser.role = "Administrador";
+                    document.getElementById('adminPanel').classList.remove('hidden');
+                }
+            }
+            document.getElementById('profileCardName').innerText = sessionUser.name;
+            document.getElementById('profileCardPfp').src = sessionUser.pfp;
+            document.getElementById('profileCardRole').innerText = sessionUser.role;
+            document.getElementById('statLevel').innerText = sessionUser.level;
+            document.getElementById('statStars').innerText = "⭐ " + sessionUser.stars;
+            document.getElementById('statScore').innerText = sessionUser.score;
+            document.getElementById('statCount').innerText = sessionUser.uploads;
+        }
+
+        function loadCloudData() {
+            fetch(`${API_URL}?action=cargar_todo`)
+            .then(res => res.json())
+            .then(data => {
+                const win = document.getElementById('chatWindow');
+                win.innerHTML = '';
+                data.chat.forEach(m => {
+                    const color = m.rango === 'Administrador' ? 'var(--accent-red)' : 'var(--primary)';
+                    win.innerHTML += `<div class="chat-msg"><strong style="color:${color}">[${m.rango}] ${m.usuario}:</strong> ${m.mensaje}</div>`;
+                });
+
+                document.getElementById('plugins').innerHTML = '';
+                document.getElementById('mapas').innerHTML = '';
+                document.getElementById('cores').innerHTML = '';
+                document.getElementById('servidores').innerHTML = '';
+
+                data.pubs.forEach(p => {
+                    const target = document.getElementById(p.categoria);
+                    if(!target) return;
+                    
+                    const isServer = p.categoria === 'servidores';
+                    const delBtn = sessionUser.role === "Administrador" ? `<button class="delete-btn" onclick="deletePost('${p.titulo}')">Eliminar</button>` : '';
+
+                    let cardHTML = `
+                        <div class="archive-card">
+                            <div class="card-header">
+                                <h4>${p.titulo}</h4>
+                                <span class="uploader-badge">${p.autor}</span>
+                            </div>
+                            <p class="card-desc">${p.descripcion}</p>
+                            <div class="card-footer">
+                                <span style="font-size:0.8rem; color:var(--text-muted);">${isServer ? 'Minecraft Bedrock Server' : 'Archivo Nube'}</span>
+                                <div>
+                                    <a href="${isServer ? 'mcpe://' + p.enlace : p.enlace}" target="_blank" class="dl-btn">${isServer ? 'Conectar' : 'Descargar'}</a>
+                                    ${delBtn}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    target.insertAdjacentHTML('afterbegin', cardHTML);
+                });
+            }).catch(err => console.log("Sincronizando base de datos en vivo..."));
+        }
+
+        function executeAuth() {
+            const u = document.getElementById('authUsername').value.trim();
+            const p = document.getElementById('authPassword').value.trim();
+            const pfp = document.getElementById('authPfp').value.trim();
+            if(!u || !p) { alert("Llena los campos"); return; }
+
+            const action = currentAuthMode === 'login' ? 'login' : 'registrar';
+
+            fetch(API_URL, {
+                method: "POST",
+                body: JSON.stringify({ action, usuario: u, password: p, pfp: pfp })
+            }).then(res => res.json())
+            .then(res => {
+                if(res.status === 'success') {
+                    if(action === 'login') {
+                        sessionUser = res.user;
+                        if(sessionUser.name.toLowerCase() === 'astrx') sessionUser.role = "Administrador";
+                        updateUI();
+                        navigateTo('mainPage');
+                    } else {
+                        alert("¡Cuenta creada con éxito! Ahora inicia sesión.");
+                        switchAuthMode('login');
+                    }
+                } else {
+                    alert(res.message);
+                }
+            });
+        }
+
         function sendGlobalMessage() {
+            if(sessionUser.name === "Invitado") { alert("Debes crear cuenta para chatear"); return; }
             const input = document.getElementById('chatMsgInput');
             const msg = input.value.trim();
             if(!msg) return;
 
-            const win = document.getElementById('chatWindow');
-            const colorRole = sessionUser.role === 'Administrador' ? 'var(--accent-red)' : 'var(--primary)';
-            
-            win.innerHTML += `<div class="chat-msg"><strong style="color:${colorRole}">[${sessionUser.role}] ${sessionUser.name}:</strong> ${msg}</div>`;
-            input.value = '';
-            win.scrollTop = win.scrollHeight;
+            fetch(API_URL, {
+                method: "POST",
+                body: JSON.stringify({ action: "enviar_chat", usuario: sessionUser.name, rango: sessionUser.role, mensaje: msg })
+            }).then(() => {
+                input.value = '';
+                loadCloudData();
+            });
         }
 
         function publishPost() {
-            const title = document.getElementById('postTitle').value.trim();
-            const cat = document.getElementById('postCategory').value;
-            const desc = document.getElementById('postDesc').value.trim();
-            if(!title) { alert("Asigna un nombre"); return; }
+            if(sessionUser.name === "Invitado") { alert("Inicia sesión para publicar"); return; }
+            const t = document.getElementById('postTitle').value.trim();
+            const c = document.getElementById('postCategory').value;
+            const d = document.getElementById('postDesc').value.trim();
+            const link = document.getElementById('postLink').value.trim();
 
-            const target = document.getElementById(cat);
-            const cardId = "card-" + Date.now();
-            let elementHTML = '';
+            if(!t || !link) { alert("Completa los campos obligatorios"); return; }
 
-            const isUserAdmin = sessionUser.role === "Administrador";
-            const badgeClass = isUserAdmin ? "uploader-badge admin-badge" : "uploader-badge";
-            
-            // Botón de remoción absoluta de archivos para el Rol Admin
-            const deleteActionHTML = isUserAdmin ? `<button class="delete-btn" onclick="document.getElementById('${cardId}').remove()">Eliminar Aporte</button>` : '';
-
-            if(cat === 'servidores') {
-                const ip = document.getElementById('serverIP').value.trim();
-                const port = document.getElementById('serverPort').value.trim() || "19132";
-                if(!ip) { alert("Completa la dirección IP"); return; }
-
-                elementHTML = `
-                    <div class="archive-card" id="${cardId}">
-                        <div class="card-header">
-                            <h4>${title}</h4>
-                            <span class="status-badge status-offline" id="status-${cardId}">Buscando...</span>
-                        </div>
-                        <p class="card-desc">IP: ${ip} | Puerto: ${port} <br><span style="color:var(--text-muted); font-size:0.8rem;">Subido por: ${sessionUser.name}</span></p>
-                        <div class="card-footer">
-                            <span style="font-size:0.8rem; color:var(--text-muted);" id="players-${cardId}">Jugadores: --</span>
-                            <div><a href="mcpe://${ip}:${port}" class="dl-btn">Conectar</a>${deleteActionHTML}</div>
-                        </div>
-                    </div>
-                `;
-                target.insertAdjacentHTML('afterbegin', elementHTML);
-                checkServerStatus(ip, port, cardId);
-            } else {
-                const fileInput = document.getElementById('uploadFile');
-                if(fileInput.files.length === 0) { alert("Carga un archivo binario"); return; }
-                const file = fileInput.files[0];
-                const fileURL = URL.createObjectURL(file);
-
-                elementHTML = `
-                    <div class="archive-card" id="${cardId}">
-                        <div class="card-header">
-                            <h4>${title}</h4>
-                            <span class="${badgeClass}">${sessionUser.role}: ${sessionUser.name}</span>
-                        </div>
-                        <p class="card-desc">${desc || 'Sin especificaciones añadidas.'}</p>
-                        <div class="card-footer">
-                            <span style="font-size:0.8rem; color:var(--text-muted);">${file.name}</span>
-                            <div><a href="${fileURL}" download="${file.name}" class="dl-btn">Descargar</a>${deleteActionHTML}</div>
-                        </div>
-                    </div>
-                `;
-                target.insertAdjacentHTML('afterbegin', elementHTML);
-            }
-
-            // Bonificación de juego por aportar contenido
-            sessionUser.uploads += 1;
-            sessionUser.score += 150;
-            sessionUser.stars += 1;
-            if(sessionUser.uploads % 3 === 0) sessionUser.level += 1;
-            
-            updateProfileCardUI();
-
-            document.getElementById('postTitle').value = '';
-            document.getElementById('postDesc').value = '';
-            document.getElementById('uploadFile').value = '';
-            document.getElementById('uploadLabel').innerText = "Seleccionar archivo";
-            document.getElementById('uploadLabel').style.color = "var(--primary)";
-            alert("Aporte publicado. ¡Ganaste +1 Estrella ⭐ y +150 Puntos!");
+            fetch(API_URL, {
+                method: "POST",
+                body: JSON.stringify({ action: "publicar", titulo: t, categoria: c, descripcion: d, enlace: link, autor: sessionUser.name })
+            }).then(() => {
+                alert("¡Guardado en Google Sheets! Nivel y Score actualizados.");
+                document.getElementById('postTitle').value = '';
+                document.getElementById('postDesc').value = '';
+                document.getElementById('postLink').value = '';
+                loadCloudData();
+                sessionUser.uploads = Number(sessionUser.uploads) + 1;
+                sessionUser.stars = Number(sessionUser.stars) + 1;
+                sessionUser.score = Number(sessionUser.score) + 150;
+                updateUI();
+            });
         }
 
-        function checkServerStatus(ip, port, id) {
-            fetch(`https://api.mcstatus.io/v2/status/bedrock/${ip}:${port}`)
-                .then(res => res.json())
-                .then(data => {
-                    const statusBadge = document.getElementById(`status-${id}`);
-                    const playersText = document.getElementById(`players-${id}`);
-                    if(!statusBadge) return;
-                    if(data.online) {
-                        statusBadge.innerText = "Online";
-                        statusBadge.className = "status-badge status-online";
-                        playersText.innerText = `Jugadores: ${data.players.online}/${data.players.max}`;
-                    } else {
-                        statusBadge.innerText = "Offline";
-                        statusBadge.className = "status-badge status-offline";
-                        playersText.innerText = "Servidor Apagado";
-                    }
-                }).catch(() => {
-                    if(document.getElementById(`status-${id}`)) document.getElementById(`status-${id}`).innerText = "Error";
-                });
-        }
-
-        function modifyUserRole() {
-            const target = document.getElementById('targetUserRole').value.trim();
-            const newRole = document.getElementById('selectedRole').value;
-            if(!target) { alert("Escribe un nombre de destino"); return; }
-            
-            const win = document.getElementById('chatWindow');
-            win.innerHTML += `<div class="chat-msg" style="border: 1px solid var(--accent-red);"><strong style="color:var(--accent-red)">[ALERTA ADMIN]:</strong> El usuario <strong>${target}</strong> ha sido promovido al rango de <strong>${newRole}</strong> por el Administrador.</div>`;
-            document.getElementById('targetUserRole').value = '';
-            alert("Rango asignado globalmente en el hilo de la comunidad.");
+        function deletePost(titulo) {
+            if(!confirm("¿Seguro que deseas eliminar este aporte?")) return;
+            fetch(API_URL, {
+                method: "POST",
+                body: JSON.stringify({ action: "eliminar", titulo: titulo })
+            }).then(() => {
+                alert("Aporte removido.");
+                loadCloudData();
+            });
         }
     </script>
 </body>
 </html>
+
