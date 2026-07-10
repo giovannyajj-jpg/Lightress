@@ -9,11 +9,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Música de fondo (Autoplay suele requerir interacción del usuario en los navegadores) -->
-    <audio id="bgMusic" loop autoplay>
-        <source src="https://youtu.be/GX8Hg6kWQYI?si=fqm6wedf-sE1q_hR" type="audio/mpeg">
-        Tu navegador no soporta el elemento de audio.
-    </audio>
+    <!-- Reproductor de YouTube Oculto (Se activará al hacer clic) -->
+    <iframe id="bgMusic" width="0" height="0" src="" frameborder="0" allow="autoplay"></iframe>
 
     <!-- Fondo de pantalla con efecto de desenfoque opcional -->
     <div class="background-overlay"></div>
@@ -32,7 +29,7 @@
             <img src="https://cdn.discordapp.com/avatars/1249562581811593227/e2ecd7dbdf95f91ab30a9ccd818dc601.png?size=2048" alt="Foto de perfil" class="profile-pic">
         </div>
 
-        <h1 class="username" onclick="playMusic()">𝕳𝖊𝖆𝖛𝖞</h1>
+        <h1 class="username">𝕳𝖊𝖆𝖛𝖞</h1>
 
         <div class="handles">
             <p>@.666is / @SnazzyX2630</p>
@@ -66,14 +63,16 @@
     </div>
 
     <script>
-        // Truco para iniciar la música al hacer el primer clic en la pantalla
+        // Este script detecta el primer clic en la página y arranca la música de YouTube de forma segura
+        let musicStarted = false;
+        
         document.body.addEventListener('click', function() {
-            var audio = document.getElementById("bgMusic");
-            if (audio.paused) {
-                audio.play();
+            if (!musicStarted) {
+                // Aquí ya está puesto el ID exacto de tu video (GX8Hg6kWQYI)
+                document.getElementById("bgMusic").src = "https://www.youtube.com/embed/GX8Hg6kWQYI?autoplay=1&loop=1&playlist=GX8Hg6kWQYI";
+                musicStarted = true;
             }
         });
     </script>
 </body>
 </html>
-
