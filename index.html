@@ -5,26 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>𝕳𝖊𝖆𝖛𝖞</title>
     <link rel="stylesheet" href="style.css">
-    <!-- FontAwesome para los íconos de redes sociales -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Reproductor de YouTube Oculto (Se activará al hacer clic) -->
-    <iframe id="bgMusic" width="0" height="0" src="" frameborder="0" allow="autoplay"></iframe>
+    <div style="position: absolute; left: -9999px; top: -9999px; width: 300px; height: 200px; opacity: 0.01; pointer-events: none;">
+        <div id="yt-audio-player"></div>
+    </div>
 
-    <!-- Fondo de pantalla con efecto de desenfoque opcional -->
     <div class="background-overlay"></div>
 
-    <!-- Efecto de nieve -->
     <div class="snowflakes" aria-hidden="true">
         <div class="snowflake">💤</div><div class="snowflake">❆</div><div class="snowflake">❅</div>
         <div class="snowflake">💤</div><div class="snowflake">❅</div><div class="snowflake">❆</div>
         <div class="snowflake">💤</div><div class="snowflake">❆</div><div class="snowflake">❅</div>
     </div>
 
-    <!-- Contenedor principal del perfil -->
     <div class="profile-container">
-        <!-- Foto de perfil con borde decorativo -->
         <div class="profile-pic-wrapper">
             <img src="https://cdn.discordapp.com/avatars/1249562581811593227/e2ecd7dbdf95f91ab30a9ccd818dc601.png?size=2048" alt="Foto de perfil" class="profile-pic">
         </div>
@@ -39,7 +35,6 @@
             <i class="fas fa-map-marker-alt"></i> From Ecuador 🇪🇨
         </div>
 
-        <!-- Widget de Estado (Estilo Discord) -->
         <div class="status-widget glass">
             <img src="https://cdn.discordapp.com/avatars/1249562581811593227/e2ecd7dbdf95f91ab30a9ccd818dc601.png?size=2048" alt="Avatar Status" class="status-avatar">
             <div class="status-info">
@@ -48,7 +43,6 @@
             </div>
         </div>
 
-        <!-- Botones de Redes Sociales -->
         <div class="social-links">
             <a href="TU_LINK_DE_DISCORD" target="_blank" class="glass-btn"><i class="fab fa-discord"></i></a>
             <a href="TU_LINK_DE_YOUTUBE" target="_blank" class="glass-btn"><i class="fab fa-youtube"></i></a>
@@ -56,20 +50,42 @@
             <a href="TU_LINK_DE_TIKTOK" target="_blank" class="glass-btn"><i class="fab fa-tiktok"></i></a>
         </div>
 
-        <!-- Contador de vistas -->
         <div class="views-counter">
             <i class="fas fa-eye"></i> 1807
         </div>
     </div>
 
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-        // Este script detecta el primer clic en la página y arranca la música de YouTube de forma segura
+        let player;
+        let apiReady = false;
         let musicStarted = false;
-        
+
+        // La API llama a esta función automáticamente al cargar la página
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('yt-audio-player', {
+                height: '200',
+                width: '300',
+                videoId: 'GX8Hg6kWQYI', // ID de Moonlight de XXXTentacion
+                playerVars: {
+                    'autoplay': 0,
+                    'loop': 1,
+                    'playlist': 'GX8Hg6kWQYI',
+                    'controls': 0,
+                    'disablekb': 1
+                },
+                events: {
+                    'onReady': function() {
+                        apiReady = true;
+                    }
+                }
+            });
+        }
+
+        // Al hacer el primer clic o toque en cualquier parte de la pantalla, la música inicia al instante
         document.body.addEventListener('click', function() {
-            if (!musicStarted) {
-                // Aquí ya está puesto el ID exacto de tu video (GX8Hg6kWQYI)
-                document.getElementById("bgMusic").src = "https://www.youtube.com/embed/GX8Hg6kWQYI?autoplay=1&loop=1&playlist=GX8Hg6kWQYI";
+            if (apiReady && player && !musicStarted) {
+                player.playVideo();
                 musicStarted = true;
             }
         });
