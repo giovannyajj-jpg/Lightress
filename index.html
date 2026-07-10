@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PocketMineArchives | Comunidad 0.15.10 & 0.14.x</title>
+    <title>SBACKUPS | Repositorio PocketMine 0.15.10 & 0.14.x</title>
     <style>
         :root {
             --primary: #00d2ff;
-            --primary-glow: rgba(0, 210, 255, 0.25);
-            --bg-dark: #070a12;
-            --bg-card: #0f1626;
-            --bg-input: #172036;
-            --text-main: #f1f5f9;
-            --text-muted: #6b7c96;
+            --primary-glow: rgba(0, 210, 255, 0.3);
+            --bg-dark: #050811;
+            --bg-panel: #0b1120;
+            --bg-input: #131b2e;
+            --text-main: #f3f7fa;
+            --text-muted: #64748b;
             --accent-green: #00ffaa;
-            --accent-red: #ff4a4a;
+            --accent-purple: #7000ff;
         }
 
         * {
@@ -32,11 +32,11 @@
             flex-direction: column;
         }
 
-        /* HEADER */
+        /* NAVBAR PREMIUM */
         header {
-            background: rgba(15, 22, 38, 0.7);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            background: rgba(11, 17, 32, 0.75);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(0, 210, 255, 0.1);
             padding: 15px 5%;
             display: flex;
             justify-content: space-between;
@@ -48,34 +48,59 @@
 
         .logo {
             font-weight: 900;
-            font-size: 1.5rem;
-            letter-spacing: 1px;
+            font-size: 1.6rem;
+            letter-spacing: 2px;
             color: #fff;
+            text-shadow: 0 0 15px var(--primary-glow);
         }
         .logo span { color: var(--primary); }
 
-        .tag-version {
-            background: rgba(0, 210, 255, 0.1);
-            border: 1px solid var(--primary);
-            color: var(--primary);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 700;
+        .user-status {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
-        /* HERO BANNER */
+        .auth-btn {
+            background: linear-gradient(135deg, var(--primary), #0084ff);
+            color: #050811;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px var(--primary);
+        }
+
+        .username-badge {
+            background: rgba(0, 255, 170, 0.1);
+            border: 1px solid var(--accent-green);
+            color: var(--accent-green);
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: none;
+        }
+
+        /* HERO INTERACTIVO */
         .hero {
             text-align: center;
-            padding: 45px 20px 20px 20px;
-            background: radial-gradient(circle at center, var(--primary-glow) 0%, transparent 65%);
+            padding: 40px 20px;
+            background: radial-gradient(circle at top, var(--primary-glow) 0%, transparent 60%);
         }
 
         .typing-container {
-            font-size: 2.6rem;
+            font-size: 2.8rem;
             font-weight: 900;
-            margin-bottom: 8px;
             letter-spacing: 1px;
+            margin-bottom: 8px;
         }
         .typing-text {
             color: var(--primary);
@@ -83,367 +108,417 @@
             white-space: nowrap;
             overflow: hidden;
             display: inline-block;
-            animation: typing 3s steps(18, end) infinite alternate, blink 0.75s step-end infinite;
+            animation: typing 3s steps(12, end) infinite alternate, blink 0.75s step-end infinite;
         }
         @keyframes typing { from { width: 0 } to { width: 100% } }
         @keyframes blink { from, to { border-color: transparent } 50% { border-color: var(--primary) } }
 
-        /* NAVEGACIÓN POR PESTAÑAS (TABS) */
+        /* CONTENEDOR PRINCIPAL GRIDS */
+        .dashboard {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 30px;
+            flex: 1;
+        }
+
+        @media (max-width: 900px) {
+            .dashboard { grid-template-columns: 1fr; }
+        }
+
+        /* PANELES ULTRA MODERNOS */
+        .glass-panel {
+            background: var(--bg-panel);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            height: fit-content;
+        }
+
+        .glass-panel h3 {
+            font-size: 1.25rem;
+            color: #fff;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--primary);
+            padding-left: 10px;
+        }
+
+        /* FORMULARIO ESTILIZADO */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        input, select, textarea {
+            background: var(--bg-input);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 12px;
+            border-radius: 10px;
+            color: #fff;
+            outline: none;
+            font-size: 0.95rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(0, 210, 255, 0.15);
+        }
+
+        /* INTERFAZ DE SUBIDA DINÁMICA (DRAG & DROP EFFECT) */
+        .dynamic-upload-zone {
+            background: rgba(0, 210, 255, 0.02);
+            border: 2px dashed rgba(0, 210, 255, 0.2);
+            border-radius: 12px;
+            padding: 30px 15px;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .dynamic-upload-zone:hover {
+            background: rgba(0, 210, 255, 0.05);
+            border-color: var(--primary);
+        }
+
+        .dynamic-upload-zone input[type="file"] {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0; cursor: pointer;
+        }
+
+        .upload-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            display: block;
+            transition: transform 0.2s;
+        }
+
+        .dynamic-upload-zone:hover .upload-icon {
+            transform: scale(1.1);
+        }
+
+        /* PESTAÑAS DEL FORO */
         .forum-tabs {
             display: flex;
-            justify-content: center;
             gap: 10px;
-            padding: 15px;
+            margin-bottom: 20px;
             overflow-x: auto;
-            background: #0a0e1a;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+            padding-bottom: 8px;
         }
 
         .tab-btn {
-            background: var(--bg-card);
+            background: var(--bg-panel);
             color: var(--text-muted);
-            border: 1px solid rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.03);
             padding: 10px 18px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
             white-space: nowrap;
-            transition: all 0.2s ease;
+            transition: all 0.2s;
         }
 
-        .tab-btn:hover, .tab-btn.active {
+        .tab-btn.active, .tab-btn:hover {
             color: #fff;
             background: var(--primary);
-            border-color: var(--primary);
-            box-shadow: 0 0 15px rgba(0, 210, 255, 0.25);
+            box-shadow: 0 0 15px var(--primary-glow);
         }
 
-        /* CONTENIDO */
-        .main-content {
-            max-width: 1000px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 25px 20px;
-            flex: 1;
-        }
+        /* TARJETAS DE APORTES MEJORADAS */
+        .feed-section { display: none; }
+        .feed-section.active { display: flex; flex-direction: column; gap: 15px; }
 
-        /* FORMULARIO DE CARGA DIRECTA DE ARCHIVOS */
-        .upload-card {
-            background: #11192e;
-            border: 2px dashed rgba(0, 210, 255, 0.3);
-            padding: 25px;
-            border-radius: 14px;
-            margin-bottom: 30px;
-        }
-
-        .upload-card h3 {
-            margin-bottom: 15px;
-            font-size: 1.2rem;
-            color: #fff;
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-
-        input[type="text"], select {
-            background: var(--bg-input);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 12px;
-            border-radius: 8px;
-            color: #fff;
-            outline: none;
-            font-size: 0.95rem;
-        }
-
-        input[type="text"]:focus, select:focus {
-            border-color: var(--primary);
-        }
-
-        /* Zona nativa de soltar archivo */
-        .file-zone {
-            background: var(--bg-input);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            padding: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .file-zone input[type="file"] {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            cursor: pointer;
-        }
-
-        .file-label {
-            font-size: 0.9rem;
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        .submit-btn {
-            background: var(--accent-green);
-            color: #04060d;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            width: 100%;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            transition: opacity 0.2s;
-        }
-
-        .submit-btn:hover { opacity: 0.9; }
-
-        /* SECCIONES DEL FORO */
-        .forum-section { display: none; }
-        .forum-section.active { display: grid; grid-template-columns: 1fr; gap: 15px; }
-
-        /* TARJETAS DE ARCHIVOS SUBIDOS */
         .archive-card {
-            background: var(--bg-card);
-            border-radius: 12px;
-            padding: 20px;
+            background: var(--bg-panel);
+            border-radius: 16px;
+            padding: 22px;
             border: 1px solid rgba(255, 255, 255, 0.02);
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 20px;
-            transition: border-color 0.2s, transform 0.2s;
+            flex-direction: column;
+            gap: 12px;
+            transition: transform 0.2s, border-color 0.2s;
         }
 
         .archive-card:hover {
             transform: translateY(-2px);
-            border-color: rgba(0, 210, 255, 0.2);
+            border-color: rgba(0, 210, 255, 0.15);
         }
 
-        .archive-info h4 {
-            font-size: 1.2rem;
-            color: #fff;
-            margin-bottom: 5px;
-        }
-
-        .archive-meta {
-            font-size: 0.85rem;
-            color: var(--text-muted);
+        .card-header {
             display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .archive-meta span strong { color: var(--primary); }
-        .file-badge {
-            background: rgba(0, 255, 170, 0.1);
-            color: var(--accent-green);
-            padding: 2px 6px;
-            border-radius: 4px;
+        .card-title h4 {
+            font-size: 1.3rem;
+            color: #fff;
+        }
+
+        .uploader-badge {
+            background: rgba(112, 0, 255, 0.2);
+            border: 1px solid var(--accent-purple);
+            color: #bfa3ff;
             font-size: 0.75rem;
             font-weight: bold;
+            padding: 3px 8px;
+            border-radius: 4px;
         }
 
-        .download-action {
-            background: #12223c;
+        .card-desc {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            background: rgba(0,0,0,0.15);
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255,255,255,0.03);
+            padding-top: 12px;
+        }
+
+        .file-info-text {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        .file-info-text strong { color: var(--primary); }
+
+        .dl-btn {
+            background: #14243f;
             color: var(--primary);
             border: 1px solid var(--primary);
-            padding: 10px 20px;
-            border-radius: 6px;
+            padding: 8px 20px;
+            border-radius: 8px;
             text-decoration: none;
-            font-size: 0.9rem;
             font-weight: 700;
+            font-size: 0.9rem;
             transition: all 0.2s;
-            white-space: nowrap;
         }
 
-        .download-action:hover {
+        .dl-btn:hover {
             background: var(--primary);
-            color: #070a12;
-            box-shadow: 0 0 10px var(--primary-glow);
+            color: #050811;
         }
 
-        @media (max-width: 650px) {
-            .archive-card { flex-direction: column; align-items: flex-start; gap: 15px; }
-            .download-action { width: 100%; text-align: center; }
+        /* MODAL DE LOGIN/REGISTRO */
+        .modal {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(3, 5, 10, 0.85);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: var(--bg-panel);
+            border: 1px solid var(--primary);
+            border-radius: 16px;
+            padding: 30px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 0 30px rgba(0,210,255,0.2);
         }
     </style>
 </head>
 <body>
 
+    <!-- CONTROL DE AUTENTICACIÓN -->
     <header>
-        <div class="logo">PocketMine<span>Archives</span></div>
-        <div class="tag-version">v0.14.x - v0.15.10</div>
+        <div class="logo">S<span>BACKUPS</span></div>
+        <div class="user-status">
+            <button class="auth-btn" id="loginTrigger" onclick="toggleModal(true)">Crear Cuenta / Login</button>
+            <div class="username-badge" id="userBadge">👤 Invitado</div>
+        </div>
     </header>
 
     <div class="hero">
         <div class="typing-container">
-            <span class="typing-text">POCKETMINE ARCHIVES</span>
+            <span class="typing-text">SBACKUPS</span>
         </div>
-        <p style="color: var(--text-muted);">Repositorio seguro. Subidas directas sin enlaces publicitarios externos.</p>
+        <p style="color: var(--text-muted);">Repositorio en la nube para PocketMine-MP v0.14.x y v0.15.10</p>
     </div>
 
-    <div class="forum-tabs">
-        <button class="tab-btn active" onclick="switchCategory('plugins')">🔌 Plugins</button>
-        <button class="tab-btn" onclick="switchCategory('mapas')">🗺️ Mapas</button>
-        <button class="tab-btn" onclick="switchCategory('cores')">📦 Cores / Backups</button>
-        <button class="tab-btn" onclick="switchCategory('skins')">🎭 Skins</button>
-        <button class="tab-btn" onclick="switchCategory('servidores')">🖥️ Servidores</button>
-    </div>
-
-    <div class="main-content">
-
-        <div class="upload-card">
-            <h3>📥 Alojar Archivo de Forma Directa</h3>
-            <div class="form-grid">
-                <input type="text" id="fileTitle" placeholder="Nombre descriptivo del aporte">
+    <!-- DASHBOARD PRINCIPAL -->
+    <div class="dashboard">
+        
+        <!-- PANEL DE SUBIDA MEJORADO (DINÁMICO) -->
+        <div class="glass-panel">
+            <h3>Subir Nuevo Archivo</h3>
+            <div class="form-group">
+                <input type="text" id="postTitle" placeholder="Título comercial del aporte">
                 
-                <select id="fileCategory">
-                    <option value="plugins">Plugins (.phar, .zip)</option>
-                    <option value="mapas">Mapas (Mundos / Hubs)</option>
-                    <option value="cores">Cores & Backups (PocketMine-MP)</option>
-                    <option value="skins">Skins (.png, .json)</option>
-                    <option value="servidores">Servidores (Promoción limpia)</option>
+                <select id="postCategory">
+                    <option value="plugins">💡 Plugins (.phar / .zip)</option>
+                    <option value="mapas">🗺️ Mapas & Mundos</option>
+                    <option value="cores">📦 Cores Estables</option>
+                    <option value="skins">🎭 Skins & Capas</option>
                 </select>
 
-                <div class="file-zone">
-                    <span class="file-label" id="fileLabel">📁 Seleccionar Archivo</span>
-                    <input type="file" id="actualFile" onchange="updateFileName()">
+                <textarea id="postDesc" rows="4" placeholder="Escribe una descripción completa del aporte, características, comandos..."></textarea>
+
+                <!-- Zona de carga fluida -->
+                <div class="dynamic-upload-zone">
+                    <span class="upload-icon">🚀</span>
+                    <span id="uploadLabel" style="font-weight: 700; color: var(--primary);">Arrastra o selecciona archivo</span>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 5px;">Máx: 50MB</p>
+                    <input type="file" id="uploadFile" onchange="handleFileSelect()">
                 </div>
+
+                <button class="auth-btn" style="padding: 12px;" onclick="publishPost()">Publicar en la Nube</button>
             </div>
-            <button class="submit-btn" onclick="uploadArchive()">Subir al Archivo Oficial</button>
         </div>
 
-        <div id="plugins" class="forum-section active">
-            <div class="archive-card">
-                <div class="archive-info">
-                    <h4>PurePerms_v1.2.1.phar <span class="file-badge">Seguro</span></h4>
-                    <div class="archive-meta">
-                        <span>Subido por: <strong>Sistema</strong></span>
-                        <span>Tamaño: <strong>142 KB</strong></span>
+        <!-- CONTENEDOR DE FILTROS Y APORTES -->
+        <div>
+            <div class="forum-tabs">
+                <button class="tab-btn active" onclick="switchTab('plugins')">🔌 Plugins</button>
+                <button class="tab-btn" onclick="switchTab('mapas')">🗺️ Mapas</button>
+                <button class="tab-btn" onclick="switchTab('cores')">📦 Cores</button>
+                <button class="tab-btn" onclick="switchTab('skins')">🎭 Skins</button>
+            </div>
+
+            <!-- FEED: PLUGINS -->
+            <div id="plugins" class="feed-section active">
+                <div class="archive-card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <h4>DevTools Modificado</h4>
+                        </div>
+                        <span class="uploader-badge">Autor: Admin_Legacy</span>
+                    </div>
+                    <p class="card-desc">Plugin esencial para cargar carpetas de código fuente de plugins directamente en formato de desarrollo sin necesidad de compilarlos a .phar continuamente.</p>
+                    <div class="card-footer">
+                        <span class="file-info-text">Archivo: <strong>DevTools.phar</strong> (45 KB)</span>
+                        <a href="#" class="dl-btn" download>Descargar</a>
                     </div>
                 </div>
-                <a href="#" class="download-action" download>Descargar Original</a>
+            </div>
+
+            <!-- FEED: MAPAS -->
+            <div id="mapas" class="feed-section"></div>
+            <!-- FEED: CORES -->
+            <div id="cores" class="feed-section"></div>
+            <!-- FEED: SKINS -->
+            <div id="skins" class="feed-section"></div>
+
+        </div>
+    </div>
+
+    <!-- INTERFAZ MODAL DE REGISTRO / LOGIN -->
+    <div class="modal" id="authModal">
+        <div class="modal-content">
+            <h3 style="color: #fff; margin-bottom: 15px;">Crear Cuenta / Login</h3>
+            <div class="form-group">
+                <input type="text" id="authUsername" placeholder="Nombre de usuario">
+                <input type="password" placeholder="Contraseña secreta">
+                <button class="auth-btn" style="padding: 10px;" onclick="saveAccount()">Guardar & Ingresar</button>
+                <button class="tab-btn" onclick="toggleModal(false)">Cancelar</button>
             </div>
         </div>
-
-        <div id="mapas" class="forum-section">
-            <div class="archive-card">
-                <div class="archive-info">
-                    <h4>Spawn_PvP_Classic.zip <span class="file-badge">Seguro</span></h4>
-                    <div class="archive-meta">
-                        <span>Subido por: <strong>Staff_Light</strong></span>
-                        <span>Tamaño: <strong>4.2 MB</strong></span>
-                    </div>
-                </div>
-                <a href="#" class="download-action" download>Descargar Original</a>
-            </div>
-        </div>
-
-        <div id="cores" class="forum-section">
-            <div class="archive-card">
-                <div class="archive-info">
-                    <h4>PocketMine-MP-0.15.10_Core.phar <span class="file-badge">Oficial</span></h4>
-                    <div class="archive-meta">
-                        <span>Versión PHP: <strong>7.0 compatible</strong></span>
-                        <span>Tamaño: <strong>2.1 MB</strong></span>
-                    </div>
-                </div>
-                <a href="#" class="download-action" download>Descargar Original</a>
-            </div>
-        </div>
-
-        <div id="skins" class="forum-section"></div>
-
-        <div id="servidores" class="forum-section">
-            <div class="archive-card">
-                <div class="archive-info">
-                    <h4>LightStress Server <span class="file-badge">Host 24/7</span></h4>
-                    <div class="archive-meta">
-                        <span>IP: <strong>play.lightstress.net</strong></span>
-                        <span>Puerto: <strong>19132</strong></span>
-                    </div>
-                </div>
-                <a href="mcpe://play.lightstress.net:19132" class="download-action">Entrar Directo</a>
-            </div>
-        </div>
-
     </div>
 
     <script>
-        // Muestra el nombre real del archivo cargado para darle feedback visual al usuario
-        function updateFileName() {
-            const fileInput = document.getElementById('actualFile');
-            const label = document.getElementById('fileLabel');
-            if (fileInput.files.length > 0) {
-                label.innerText = "✓ " + fileInput.files[0].name;
+        let currentSessionUser = "Invitado";
+
+        // Control visual del modal
+        function toggleModal(show) {
+            document.getElementById('authModal').style.display = show ? 'flex' : 'none';
+        }
+
+        // Registrar/Logear cuenta localmente
+        function saveAccount() {
+            const user = document.getElementById('authUsername').value.trim();
+            if(!user) { alert("Ingresa un usuario válido"); return; }
+            
+            currentSessionUser = user;
+            
+            // Reemplazar botón por el Badge del usuario
+            document.getElementById('loginTrigger').style.display = 'none';
+            const badge = document.getElementById('userBadge');
+            badge.innerText = "👤 " + currentSessionUser;
+            badge.style.display = 'block';
+            
+            toggleModal(false);
+        }
+
+        // Efecto visual dinámico al seleccionar un archivo de almacenamiento
+        function handleFileSelect() {
+            const input = document.getElementById('uploadFile');
+            const label = document.getElementById('uploadLabel');
+            if(input.files.length > 0) {
+                label.innerText = "✓ " + input.files[0].name;
                 label.style.color = "var(--accent-green)";
             }
         }
 
-        // Cambiar pestañas de categorías sin recargar la página (Ahorro total de Lag)
-        function switchCategory(category) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.forum-section').forEach(sec => sec.classList.remove('active'));
-
+        // Intercambio estético de pestañas sin lag
+        function switchTab(category) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.feed-section').forEach(s => s.classList.remove('active'));
+            
             event.target.classList.add('active');
             document.getElementById(category).classList.add('active');
         }
 
-        // Procesa el archivo real subido y lo inyecta directamente
-        function uploadArchive() {
-            const title = document.getElementById('fileTitle').value;
-            const category = document.getElementById('fileCategory').value;
-            const fileInput = document.getElementById('actualFile');
+        // Publicar aporte dinámicamente incluyendo la firma del Autor y Descripción
+        function publishPost() {
+            const title = document.getElementById('postTitle').value.trim();
+            const cat = document.getElementById('postCategory').value;
+            const desc = document.getElementById('postDesc').value.trim();
+            const fileInput = document.getElementById('uploadFile');
 
-            if (!title) {
-                alert("Por favor, ingresa un nombre para tu aporte.");
-                return;
-            }
-            if (fileInput.files.length === 0) {
-                alert("Por favor, selecciona un archivo real de tu dispositivo.");
+            if(!title || !desc || fileInput.files.length === 0) {
+                alert("Completa todos los campos obligatorios y selecciona un archivo.");
                 return;
             }
 
             const file = fileInput.files[0];
-            const sizeInMB = (file.size / (1024 * 1024)).toFixed(2);
-            
-            // Creamos una URL de descarga segura basada en el objeto binario del archivo local (BLOB)
-            const secureDownloadURL = URL.createObjectURL(file);
+            const size = (file.size / 1024).toFixed(1) + " KB";
+            const fileObjectURL = URL.createObjectURL(file); // Enlace directo local seguro
 
-            const container = document.getElementById(category);
+            const targetSection = document.getElementById(cat);
 
-            const newCardHTML = `
+            const newPostHTML = `
                 <div class="archive-card">
-                    <div class="archive-info">
-                        <h4>${title} <span class="file-badge">Usuario</span></h4>
-                        <div class="archive-meta">
-                            <span>Archivo: <strong>${file.name}</strong></span>
-                            <span>Tamaño: <strong>${sizeInMB} MB</strong></span>
+                    <div class="card-header">
+                        <div class="card-title">
+                            <h4>${title}</h4>
                         </div>
+                        <span class="uploader-badge">Autor: ${currentSessionUser}</span>
                     </div>
-                    <a href="${secureDownloadURL}" download="${file.name}" class="download-action">Descargar Original</a>
+                    <p class="card-desc">${desc}</p>
+                    <div class="card-footer">
+                        <span class="file-info-text">Archivo: <strong>${file.name}</strong> (${size})</span>
+                        <a href="${fileObjectURL}" download="${file.name}" class="dl-btn">Descargar</a>
+                    </div>
                 </div>
             `;
 
-            container.insertAdjacentHTML('afterbegin', newCardHTML);
+            targetSection.insertAdjacentHTML('afterbegin', newPostHTML);
 
-            // Reseteamos el formulario de forma limpia
-            document.getElementById('fileTitle').value = "";
-            document.getElementById('actualFile').value = "";
-            document.getElementById('fileLabel').innerText = "📁 Seleccionar Archivo";
-            document.getElementById('fileLabel').style.color = "var(--primary)";
+            // Resetear el panel dinámico
+            document.getElementById('postTitle').value = "";
+            document.getElementById('postDesc').value = "";
+            document.getElementById('uploadFile').value = "";
+            document.getElementById('uploadLabel').innerText = "Arrastra o selecciona archivo";
+            document.getElementById('uploadLabel').style.color = "var(--primary)";
 
-            alert("¡Archivo verificado y subido con éxito al repositorio seguro!");
+            alert("¡Aporte subido de forma segura a SBACKUPS!");
         }
     </script>
 </body>
