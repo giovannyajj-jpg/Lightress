@@ -3,226 +3,412 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LightStress | Servidor PocketMine</title>
+    <title>LightStress | Foro Comunidad 0.15.10 & 0.14.x</title>
     <style>
-        /* CSS Moderno, sin librerías pesadas para evitar el LAG */
         :root {
             --primary: #00d2ff;
-            --primary-glow: rgba(0, 210, 255, 0.3);
-            --bg-dark: #0a0c10;
-            --bg-card: #121620;
-            --text: #f5f5f7;
+            --primary-glow: rgba(0, 210, 255, 0.2);
+            --bg-dark: #090d16;
+            --bg-card: #111726;
+            --bg-input: #182032;
+            --text-main: #f0f4f8;
+            --text-muted: #7687a1;
+            --accent-green: #00ffaa;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Segoe UI', system-ui, sans-serif;
         }
 
         body {
             background-color: var(--bg-dark);
-            color: var(--text);
-            overflow-x: hidden;
+            color: var(--text-main);
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
+        }
+
+        /* HEADER / NAVEGACIÓN */
+        header {
+            background: rgba(17, 23, 38, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            min-height: 100vh;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
-        /* Fondo de partículas sutil sin JavaScript (Cero Lag) */
-        .bg-glow {
-            position: absolute;
-            top: -10%;
-            left: -10%;
-            width: 120%;
-            height: 120%;
-            background: radial-gradient(circle at center, var(--primary-glow) 0%, transparent 70%);
-            z-index: -1;
-            pointer-events: none;
+        .logo {
+            font-weight: 900;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+        }
+        .logo span { color: var(--primary); }
+
+        .tag-version {
+            background: rgba(0, 210, 255, 0.1);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
         }
 
-        .container {
+        /* BANNER PRINCIPAL */
+        .hero {
             text-align: center;
-            padding: 2rem;
-            max-width: 800px;
-            width: 100%;
+            padding: 40px 20px 20px 20px;
+            background: radial-gradient(circle at center, var(--primary-glow) 0%, transparent 70%);
         }
 
-        /* EFECTO DE ESCRITURA (Typing Effect) */
+        /* EFECTO DE ESCRITURA */
         .typing-container {
-            font-size: 3.5rem;
+            font-size: 2.5rem;
             font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 2px;
             margin-bottom: 10px;
-            color: #ffffff;
-            display: inline-block;
         }
-
         .typing-text {
             color: var(--primary);
-            text-shadow: 0 0 20px var(--primary-glow);
-            border-right: 4px solid var(--primary);
+            border-right: 3px solid var(--primary);
             white-space: nowrap;
-            animation: typing 3.5s steps(25, end) infinite alternate, blink 0.75s step-end infinite;
             overflow: hidden;
             display: inline-block;
-            vertical-align: bottom;
+            animation: typing 3s steps(15, end) infinite alternate, blink 0.75s step-end infinite;
+        }
+        @keyframes typing { from { width: 0 } to { width: 100% } }
+        @keyframes blink { from, to { border-color: transparent } 50% { border-color: var(--primary) } }
+
+        /* CATEGORÍAS DEL FORO (TABS) */
+        .forum-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 20px;
+            overflow-x: auto;
+            background: #0d1321;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
         }
 
-        @keyframes typing {
-            from { width: 0 }
-            to { width: 100% }
-        }
-
-        @keyframes blink {
-            from, to { border-color: transparent }
-            50% { border-color: var(--primary); }
-        }
-
-        .subtitle {
-            font-size: 1.2rem;
-            color: #8a99ad;
-            margin-bottom: 2.5rem;
-        }
-
-        /* TARJETAS DE INFORMACIÓN */
-        .grid-info {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            margin-bottom: 3rem;
-        }
-
-        .card {
+        .tab-btn {
             background: var(--bg-card);
+            color: var(--text-muted);
             border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 1.5rem;
-            transition: transform 0.3s ease, border-color 0.3s ease;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: all 0.2s ease;
         }
 
-        .card:hover {
-            transform: translateY(-5px);
+        .tab-btn:hover, .tab-btn.active {
+            color: #fff;
+            background: var(--primary);
             border-color: var(--primary);
-            box-shadow: 0 10px 20px rgba(0, 210, 255, 0.1);
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.3);
         }
 
-        .card h3 {
+        /* CONTENEDOR DE APORTES */
+        .main-content {
+            max-width: 1100px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 30px 20px;
+            flex: 1;
+        }
+
+        .forum-section {
+            display: none;
+        }
+
+        .forum-section.active {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        /* TARJETA DE PUBLICACIÓN (POST) */
+        .post-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .post-card:hover {
+            transform: translateX(5px);
+            border-color: rgba(0, 210, 255, 0.2);
+        }
+
+        .post-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 6px;
+            color: #fff;
+        }
+
+        .post-meta {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .post-meta span strong {
             color: var(--primary);
-            margin-bottom: 8px;
+        }
+
+        .download-btn {
+            background: #16243d;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .download-btn:hover {
+            background: var(--primary);
+            color: #000;
+        }
+
+        /* FORMULARIO PARA APORTAR (SÚPER SIMPLE) */
+        .add-post-box {
+            background: #131a2c;
+            border: 1px dashed var(--primary);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+
+        .add-post-box h3 {
+            margin-bottom: 15px;
             font-size: 1.1rem;
         }
 
-        .card p {
-            color: #b0b8c4;
-            font-size: 0.95rem;
-        }
-
-        /* BOTÓN DE COPIAR IP */
-        .ip-box {
-            background: #161b26;
-            border: 2px dashed var(--primary);
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            display: inline-flex;
-            align-items: center;
+        .form-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 15px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background 0.2s;
+            margin-bottom: 15px;
         }
 
-        .ip-box:hover {
-            background: rgba(0, 210, 255, 0.1);
-        }
-
-        .ip-text {
+        input, select {
+            background: var(--bg-input);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 6px;
             color: #fff;
-            font-size: 1.2rem;
+            outline: none;
         }
 
-        .click-to-copy {
-            font-size: 0.8rem;
-            color: var(--primary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        input:focus, select:focus {
+            border-color: var(--primary);
         }
 
-        /* Alerta flotante */
-        .alert {
-            position: fixed;
-            bottom: -20px;
-            background: var(--primary);
+        .submit-btn {
+            background: var(--accent-green);
             color: #000;
-            font-weight: bold;
+            border: none;
             padding: 10px 20px;
-            border-radius: 5px;
-            opacity: 0;
-            transition: all 0.3s ease;
-            pointer-events: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
         }
 
-        .alert.show {
-            bottom: 20px;
-            opacity: 1;
+        @media (max-width: 600px) {
+            .post-card { flex-direction: column; align-items: flex-start; }
+            .download-btn { width: 100%; text-align: center; }
         }
     </style>
 </head>
 <body>
 
-    <div class="bg-glow"></div>
+    <header>
+        <div class="logo">LIGHT<span>STRESS</span></div>
+        <div class="tag-version">PocketMine 0.15.x / 0.14.x</div>
+    </header>
 
-    <div class="container">
-        <!-- Entrada Épica con Efecto de Escritura -->
+    <div class="hero">
         <div class="typing-container">
-            <span class="typing-text">LIGHTSTRESS</span>
+            <span class="typing-text">FORO COMUNIDAD</span>
         </div>
-        
-        <p class="subtitle">El servidor definitivo para MCPE 0.15.10 y 0.14.x</p>
-
-        <!-- Información del Servidor -->
-        <div class="grid-info">
-            <div class="card">
-                <h3>Versiones</h3>
-                <p>0.15.10 x 0.14.x</p>
-            </div>
-            <div class="card">
-                <h3>Rendimiento</h3>
-                <p>Host 24/7 de Alta Calidad, 0 Lag</p>
-            </div>
-            <div class="card">
-                <h3>Comunidad</h3>
-                <p>Survival, PvP y economía activa</p>
-            </div>
-        </div>
-
-        <!-- Botón interactivo para copiar IP -->
-        <div class="ip-box" onclick="copyIP()">
-            <div>
-                <p class="ip-text" id="server-ip">play.lightstress.net</p>
-                <p style="color: #657786; font-size: 0.9rem;">Puerto: 19132</p>
-            </div>
-            <span class="click-to-copy">¡Copiar IP!</span>
-        </div>
+        <p style="color: var(--text-muted);">Comparte y descarga contenido exclusivo sin anuncios molestos.</p>
     </div>
 
-    <div class="alert" id="alert">¡IP Copiada al portapapeles!</div>
+    <!-- Menú de Pestañas del Foro -->
+    <div class="forum-tabs">
+        <button class="tab-btn active" onclick="switchTab('plugins')">🔌 Plugins</button>
+        <button class="tab-btn" onclick="switchTab('mapas')">🗺️ Mapas</button>
+        <button class="tab-btn" onclick="switchTab('cores')">📦 Cores & Backups</button>
+        <button class="tab-btn" onclick="switchTab('skins')">🎭 Skins</button>
+        <button class="tab-btn" onclick="switchTab('servidores')">🖥️ Servidores</button>
+    </div>
+
+    <div class="main-content">
+
+        <!-- Formulario Simulado para publicar rápido -->
+        <div class="add-post-box">
+            <h3>📢 Publicar un aporte en la comunidad</h3>
+            <div class="form-group">
+                <input type="text" id="postTitle" placeholder="Título del aporte (Ej: PurePerms Modificado)">
+                <input type="text" id="postLink" placeholder="Enlace de descarga (MediaFire, GitHub...)">
+                <select id="postCategory">
+                    <option value="plugins">Plugins</option>
+                    <option value="mapas">Mapas</option>
+                    <option value="cores">Cores & Backups</option>
+                    <option value="skins">Skins</option>
+                    <option value="servidores">Servidores</option>
+                </select>
+            </div>
+            <button class="submit-btn" onclick="createNewPost()">Publicar Aporte</button>
+        </div>
+
+        <!-- SECCIÓN: PLUGINS -->
+        <div id="plugins" class="forum-section active">
+            <div class="post-card">
+                <div class="post-info">
+                    <h3>PurePerms Estable (Fix 0.15.10)</h3>
+                    <div class="post-meta">
+                        <span>Autor: <strong>Staff_Light</strong></span>
+                        <span>Compatibilidad: <strong>0.15.x</strong></span>
+                    </div>
+                </div>
+                <a href="#" class="download-btn" target="_blank">Descargar</a>
+            </div>
+            <div class="post-card">
+                <div class="post-info">
+                    <h3>FactionsPro con Economía Integrada</h3>
+                    <div class="post-meta">
+                        <span>Autor: <strong>AlexMcpe</strong></span>
+                        <span>Compatibilidad: <strong>0.14.x / 0.15.x</strong></span>
+                    </div>
+                </div>
+                <a href="#" class="download-btn" target="_blank">Descargar</a>
+            </div>
+        </div>
+
+        <!-- SECCIÓN: MAPAS -->
+        <div id="mapas" class="forum-section">
+            <div class="post-card">
+                <div class="post-info">
+                    <h3>Spawn Épico Medieval Hub</h3>
+                    <div class="post-meta">
+                        <span>Autor: <strong>BuilderPro</strong></span>
+                        <span>Tipo: <strong>Lobby / Spawn</strong></span>
+                    </div>
+                </div>
+                <a href="#" class="download-btn" target="_blank">Descargar</a>
+            </div>
+        </div>
+
+        <!-- SECCIÓN: CORES -->
+        <div id="cores" class="forum-section">
+            <div class="post-card">
+                <div class="post-info">
+                    <h3>PocketMine-MP Core Estable (Build 0.15.10)</h3>
+                    <div class="post-meta">
+                        <span>Autor: <strong>LegacyDev</strong></span>
+                        <span>Nota: <strong>Incluye PHP 7 compatible</strong></span>
+                    </div>
+                </div>
+                <a href="#" class="download-btn" target="_blank">Descargar</a>
+            </div>
+        </div>
+
+        <!-- SECCIÓN: SKINS -->
+        <div id="skins" class="forum-section">
+            <div class="post-card">
+                <div class="post-info">
+                    <h3>Pack de Skins PvP 4D (Compatibles)</h3>
+                    <div class="post-meta">
+                        <span>Autor: <strong>SkinMaker</strong></span>
+                        <span>Formato: <strong>.png / .json</strong></span>
+                    </div>
+                </div>
+                <a href="#" class="download-btn" target="_blank">Descargar</a>
+            </div>
+        </div>
+
+        <!-- SECCIÓN: SERVIDORES -->
+        <div id="servidores" class="forum-section">
+            <div class="post-card">
+                <div class="post-info">
+                    <h3>LightStress Oficial Server</h3>
+                    <div class="post-meta">
+                        <span>IP: <strong>play.lightstress.net</strong></span>
+                        <span>Puerto: <strong>19132</strong></span>
+                    </div>
+                </div>
+                <a href="#" class="download-btn">Entrar</a>
+            </div>
+        </div>
+
+    </div>
 
     <script>
-        // Función rápida y ligera para copiar la IP
-        function copyIP() {
-            const ipText = document.getElementById('server-ip').innerText;
-            navigator.clipboard.writeText(ipText).then(() => {
-                const alert = document.getElementById('alert');
-                alert.classList.add('show');
-                setTimeout(() => {
-                    alert.classList.remove('show');
-                }, 2000);
-            });
+        // Cambiar entre pestañas fluidamente y sin lag
+        function switchTab(category) {
+            // Desactivar todos los botones y secciones
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.forum-section').forEach(sec => sec.classList.remove('active'));
+
+            // Activar la seleccionada
+            event.target.classList.add('active');
+            document.getElementById(category).classList.add('active');
+        }
+
+        // Sistema dinámico local para añadir posts temporalmente (Sin lag, render instantáneo)
+        function createNewPost() {
+            const title = document.getElementById('postTitle').value;
+            const link = document.getElementById('postLink').value;
+            const cat = document.getElementById('postCategory').value;
+
+            if(!title || !link) {
+                alert("Por favor completa el título y el enlace.");
+                return;
+            }
+
+            const container = document.getElementById(cat);
+            
+            const postHTML = `
+                <div class="post-card">
+                    <div class="post-info">
+                        <h3>${title}</h3>
+                        <div class="post-meta">
+                            <span>Autor: <strong>Usuario_Foro</strong></span>
+                            <span>Enlace: <strong>Comunidad</strong></span>
+                        </div>
+                    </div>
+                    <a href="${link}" class="download-btn" target="_blank">Descargar</a>
+                </div>
+            `;
+
+            container.insertAdjacentHTML('afterbegin', postHTML);
+
+            // Limpiar inputs
+            document.getElementById('postTitle').value = "";
+            document.getElementById('postLink').value = "";
+            
+            alert("¡Aporte añadido a la pestaña con éxito!");
         }
     </script>
 </body>
