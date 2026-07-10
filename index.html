@@ -6,6 +6,17 @@
     <title>𝕳𝖊𝖆𝖛𝖞</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Estilo rápido para tu nueva descripción */
+        .bio {
+            font-size: 15px;
+            color: #b3b3b3;
+            margin-top: -5px;
+            margin-bottom: 15px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+    </style>
 </head>
 <body>
     <div style="position: absolute; left: -9999px; top: -9999px; width: 300px; height: 200px; opacity: 0.01; pointer-events: none;">
@@ -22,7 +33,7 @@
 
     <div class="profile-container">
         <div class="profile-pic-wrapper">
-            <img src="https://cdn.discordapp.com/avatars/1249562581811593227/e2ecd7dbdf95f91ab30a9ccd818dc601.png?size=2048" alt="Foto de perfil" class="profile-pic">
+            <img id="user-avatar" src="https://cdn.discordapp.com/avatars/1249562581811593227/e2ecd7dbdf95f91ab30a9ccd818dc601.png?size=2048" alt="Foto de perfil" class="profile-pic">
         </div>
 
         <h1 class="username">𝕳𝖊𝖆𝖛𝖞</h1>
@@ -31,15 +42,17 @@
             <p>@.666is / @SnazzyX2630</p>
         </div>
 
+        <p class="bio">NodeJS dev and css</p>
+
         <div class="location">
             <i class="fas fa-map-marker-alt"></i> From Ecuador 🇪🇨
         </div>
 
         <div class="status-widget glass">
-            <img src="https://cdn.discordapp.com/avatars/1249562581811593227/e2ecd7dbdf95f91ab30a9ccd818dc601.png?size=2048" alt="Avatar Status" class="status-avatar">
+            <img id="status-avatar" src="https://cdn.discordapp.com/avatars/1249562581811593227/e2ecd7dbdf95f91ab30a9ccd818dc601.png?size=2048" alt="Avatar Status" class="status-avatar">
             <div class="status-info">
                 <div class="status-name">.666is <i class="fa-solid fa-bolt"></i> <i class="fa-brands fa-discord"></i></div>
-                <div class="status-time">last seen 4 hours ago</div>
+                <div class="status-time" id="discord-status">Cargando estado...</div>
             </div>
         </div>
 
@@ -58,36 +71,88 @@
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         let player;
-        let apiReady = false;
         let musicStarted = false;
+        const discordUserID = "1249562581811593227";
 
-        // La API llama a esta función automáticamente al cargar la página
+        // 1. CONTROL DE MÚSICA (Carga, Actualización y Toques)
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('yt-audio-player', {
                 height: '200',
                 width: '300',
-                videoId: 'GX8Hg6kWQYI', // ID de Moonlight de XXXTentacion
+                videoId: 'GX8Hg6kWQYI',
                 playerVars: {
-                    'autoplay': 0,
+                    'autoplay': 1, // Intenta reproducir directo al conectar/actualizar
                     'loop': 1,
                     'playlist': 'GX8Hg6kWQYI',
                     'controls': 0,
                     'disablekb': 1
                 },
                 events: {
-                    'onReady': function() {
-                        apiReady = true;
+                    'onReady': function(event) {
+                        // Intento de reproducción forzada al cargar la API
+                        event.target.playVideo();
+                    },
+                    'onStateChange': function(event) {
+                        if (event.data === YT.PlayerState.PLAYING) {
+                            musicStarted = true;
+                        }
                     }
                 }
             });
         }
 
-        // Al hacer el primer clic o toque en cualquier parte de la pantalla, la música inicia al instante
-        document.body.addEventListener('click', function() {
-            if (apiReady && player && !musicStarted) {
+        // Activador por interacciones físicas (Toques, clics, teclado)
+        const arrancarMusicaForzado = () => {
+            if (player && !musicStarted) {
                 player.playVideo();
                 musicStarted = true;
             }
+        };
+
+        document.addEventListener('click', arrancarMusicaForzado);
+        document.addEventListener('touchstart', arrancarMusicaForzado);
+        document.addEventListener('keydown', arrancarMusicaForzado);
+
+
+        // 2. QUERY REAL DE DISCORD (Lanyard API)
+        async function checkDiscordStatus() {
+            try {
+                const response = await fetch(`https://api.lanyard.rest/v1/users/${discordUserID}`);
+                const resData = await response.json();
+                
+                if (resData.success && resData.data) {
+                    const data = resData.data;
+                    const statusText = document.getElementById('discord-status');
+                    
+                    // Definir estados básicos
+                    let visualStatus = "Offline 💤";
+                    if (data.discord_status === "online") visualStatus = "Online 🟢";
+                    if (data.discord_status === "idle") visualStatus = "Idle 🌙";
+                    if (data.discord_status === "dnd") visualStatus = "Do Not Disturb 🔴";
+
+                    // Verificar si está jugando o haciendo algo específico
+                    if (data.activities && data.activities.length > 0) {
+                        // Buscar actividad tipo juego (type 0)
+                        const game = data.activities.find(act => act.type === 0);
+                        if (game) {
+                            visualStatus += ` | Jugando a ${game.name}`;
+                        } else if (data.activities[0].state) {
+                            // Si tiene un estado personalizado en texto
+                            visualStatus += ` | ${data.activities[0].state}`;
+                        }
+                    }
+                    
+                    statusText.innerText = visualStatus;
+                }
+            } catch (err) {
+                document.getElementById('discord-status').innerText = "Status offline";
+            }
+        }
+
+        // Ejecutar consulta de Discord al entrar y actualizar cada 15 segundos
+        window.addEventListener('DOMContentLoaded', () => {
+            checkDiscordStatus();
+            setInterval(checkDiscordStatus, 15000);
         });
     </script>
 </body>
