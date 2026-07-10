@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SBACKUPS | Repositorio PocketMine 0.15.10 & 0.14.x</title>
+    <title>SBACKUPS | PocketMine Community Hub</title>
     <style>
         :root {
             --primary: #00d2ff;
             --primary-glow: rgba(0, 210, 255, 0.3);
-            --bg-dark: #050811;
-            --bg-panel: #0b1120;
-            --bg-input: #131b2e;
-            --text-main: #f3f7fa;
+            --bg-dark: #040712;
+            --bg-panel: #0a101f;
+            --bg-input: #121a2e;
+            --text-main: #f1f5f9;
             --text-muted: #64748b;
             --accent-green: #00ffaa;
-            --accent-purple: #7000ff;
+            --accent-red: #ff4a4a;
         }
 
         * {
@@ -30,17 +30,31 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            overflow-x: hidden;
         }
 
-        /* NAVBAR PREMIUM */
+        /* CAPAS DE PÁGINAS VIRTUALES */
+        .app-page {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            width: 100%;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* NAVBAR MEJORADO PARA ANDROID */
         header {
-            background: rgba(11, 17, 32, 0.75);
+            background: rgba(10, 16, 31, 0.85);
             backdrop-filter: blur(16px);
             border-bottom: 1px solid rgba(0, 210, 255, 0.1);
             padding: 15px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 15px;
             position: sticky;
             top: 0;
             z-index: 100;
@@ -48,59 +62,54 @@
 
         .logo {
             font-weight: 900;
-            font-size: 1.6rem;
-            letter-spacing: 2px;
+            font-size: 1.4rem;
+            letter-spacing: 1.5px;
             color: #fff;
-            text-shadow: 0 0 15px var(--primary-glow);
+            text-shadow: 0 0 12px var(--primary-glow);
+            white-space: nowrap;
         }
         .logo span { color: var(--primary); }
 
-        .user-status {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
         .auth-btn {
-            background: linear-gradient(135deg, var(--primary), #0084ff);
-            color: #050811;
+            background: linear-gradient(135deg, var(--primary), #0077ff);
+            color: #040712;
             border: none;
-            padding: 8px 18px;
+            padding: 8px 16px;
             border-radius: 8px;
             font-weight: 700;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            white-space: nowrap;
             transition: transform 0.2s, box-shadow 0.2s;
         }
 
         .auth-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 15px var(--primary);
+            transform: translateY(-1px);
+            box-shadow: 0 0 12px var(--primary);
         }
 
         .username-badge {
             background: rgba(0, 255, 170, 0.1);
             border: 1px solid var(--accent-green);
             color: var(--accent-green);
-            padding: 6px 14px;
-            border-radius: 30px;
-            font-size: 0.85rem;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
             font-weight: 700;
             display: none;
         }
 
-        /* HERO INTERACTIVO */
+        /* HERO AJUSTADO */
         .hero {
             text-align: center;
-            padding: 40px 20px;
+            padding: 30px 20px 15px 20px;
             background: radial-gradient(circle at top, var(--primary-glow) 0%, transparent 60%);
         }
 
         .typing-container {
-            font-size: 2.8rem;
+            font-size: 2.2rem;
             font-weight: 900;
-            letter-spacing: 1px;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
         }
         .typing-text {
             color: var(--primary);
@@ -108,83 +117,76 @@
             white-space: nowrap;
             overflow: hidden;
             display: inline-block;
-            animation: typing 3s steps(12, end) infinite alternate, blink 0.75s step-end infinite;
+            animation: typing 2.5s steps(8, end) infinite alternate, blink 0.75s step-end infinite;
         }
         @keyframes typing { from { width: 0 } to { width: 100% } }
         @keyframes blink { from, to { border-color: transparent } 50% { border-color: var(--primary) } }
 
-        /* CONTENEDOR PRINCIPAL GRIDS */
+        /* DASHBOARD RESPONSIVO */
         .dashboard {
             max-width: 1200px;
             width: 100%;
             margin: 0 auto;
-            padding: 20px;
+            padding: 15px;
             display: grid;
-            grid-template-columns: 350px 1fr;
-            gap: 30px;
+            grid-template-columns: 360px 1fr;
+            gap: 20px;
             flex: 1;
         }
 
         @media (max-width: 900px) {
             .dashboard { grid-template-columns: 1fr; }
+            header { padding: 12px 4%; }
+            .logo { font-size: 1.2rem; }
         }
 
-        /* PANELES ULTRA MODERNOS */
         .glass-panel {
             background: var(--bg-panel);
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            border-radius: 16px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
             height: fit-content;
         }
 
         .glass-panel h3 {
-            font-size: 1.25rem;
+            font-size: 1.15rem;
             color: #fff;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             border-left: 4px solid var(--primary);
-            padding-left: 10px;
+            padding-left: 8px;
         }
 
-        /* FORMULARIO ESTILIZADO */
+        /* FORMULARIOS */
         .form-group {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
         }
 
         input, select, textarea {
             background: var(--bg-input);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            padding: 12px;
-            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 11px;
+            border-radius: 8px;
             color: #fff;
             outline: none;
-            font-size: 0.95rem;
-            transition: border-color 0.2s, box-shadow 0.2s;
+            font-size: 0.9rem;
         }
 
         input:focus, select:focus, textarea:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 10px rgba(0, 210, 255, 0.15);
         }
 
-        /* INTERFAZ DE SUBIDA DINÁMICA (DRAG & DROP EFFECT) */
+        /* INTERFAZ DE SUBIDA DINÁMICA DE ARCHIVOS */
         .dynamic-upload-zone {
-            background: rgba(0, 210, 255, 0.02);
+            background: rgba(0, 210, 255, 0.01);
             border: 2px dashed rgba(0, 210, 255, 0.2);
-            border-radius: 12px;
-            padding: 30px 15px;
+            border-radius: 10px;
+            padding: 20px 10px;
             text-align: center;
             cursor: pointer;
             position: relative;
-            transition: all 0.3s ease;
-        }
-
-        .dynamic-upload-zone:hover {
-            background: rgba(0, 210, 255, 0.05);
-            border-color: var(--primary);
         }
 
         .dynamic-upload-zone input[type="file"] {
@@ -193,270 +195,265 @@
             opacity: 0; cursor: pointer;
         }
 
-        .upload-icon {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            display: block;
-            transition: transform 0.2s;
-        }
-
-        .dynamic-upload-zone:hover .upload-icon {
-            transform: scale(1.1);
-        }
-
         /* PESTAÑAS DEL FORO */
         .forum-tabs {
             display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 8px;
+            margin-bottom: 15px;
             overflow-x: auto;
-            padding-bottom: 8px;
+            padding-bottom: 5px;
         }
 
         .tab-btn {
             background: var(--bg-panel);
             color: var(--text-muted);
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            padding: 10px 18px;
-            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            padding: 8px 14px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: 600;
             white-space: nowrap;
-            transition: all 0.2s;
         }
 
         .tab-btn.active, .tab-btn:hover {
             color: #fff;
             background: var(--primary);
-            box-shadow: 0 0 15px var(--primary-glow);
         }
 
-        /* TARJETAS DE APORTES MEJORADAS */
+        /* TARJETAS DE APORTES */
         .feed-section { display: none; }
-        .feed-section.active { display: flex; flex-direction: column; gap: 15px; }
+        .feed-section.active { display: flex; flex-direction: column; gap: 12px; }
 
         .archive-card {
             background: var(--bg-panel);
-            border-radius: 16px;
-            padding: 22px;
-            border: 1px solid rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            padding: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.01);
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            transition: transform 0.2s, border-color 0.2s;
-        }
-
-        .archive-card:hover {
-            transform: translateY(-2px);
-            border-color: rgba(0, 210, 255, 0.15);
+            gap: 10px;
         }
 
         .card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-
-        .card-title h4 {
-            font-size: 1.3rem;
-            color: #fff;
+            gap: 10px;
         }
 
         .uploader-badge {
-            background: rgba(112, 0, 255, 0.2);
-            border: 1px solid var(--accent-purple);
-            color: #bfa3ff;
+            background: rgba(0, 210, 255, 0.1);
+            color: var(--primary);
             font-size: 0.75rem;
-            font-weight: bold;
             padding: 3px 8px;
             border-radius: 4px;
         }
 
+        .status-badge {
+            font-size: 0.75rem;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        .status-online { background: rgba(0, 255, 170, 0.15); color: var(--accent-green); }
+        .status-offline { background: rgba(255, 74, 74, 0.15); color: var(--accent-red); }
+
         .card-desc {
             color: #94a3b8;
-            font-size: 0.95rem;
-            line-height: 1.5;
-            background: rgba(0,0,0,0.15);
-            padding: 10px;
-            border-radius: 8px;
+            font-size: 0.9rem;
+            line-height: 1.4;
         }
 
         .card-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-top: 1px solid rgba(255,255,255,0.03);
-            padding-top: 12px;
+            border-top: 1px solid rgba(255,255,255,0.02);
+            padding-top: 10px;
         }
-
-        .file-info-text {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-        .file-info-text strong { color: var(--primary); }
 
         .dl-btn {
-            background: #14243f;
+            background: #101f38;
             color: var(--primary);
             border: 1px solid var(--primary);
-            padding: 8px 20px;
-            border-radius: 8px;
+            padding: 6px 14px;
+            border-radius: 6px;
             text-decoration: none;
             font-weight: 700;
-            font-size: 0.9rem;
-            transition: all 0.2s;
+            font-size: 0.85rem;
         }
 
-        .dl-btn:hover {
-            background: var(--primary);
-            color: #050811;
-        }
-
-        /* MODAL DE LOGIN/REGISTRO */
-        .modal {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(3, 5, 10, 0.85);
-            backdrop-filter: blur(8px);
-            display: none;
+        /* PÁGINA COMPLETA DE AUTENTICACIÓN (LOGIN INTERNO) */
+        .auth-fullscreen {
+            background-color: var(--bg-dark);
+            width: 100vw;
+            min-height: 100vh;
+            display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 1000;
+            padding: 20px;
+            position: fixed;
+            top: 0; left: 0; z-index: 1000;
         }
 
-        .modal-content {
+        .auth-box {
             background: var(--bg-panel);
-            border: 1px solid var(--primary);
+            border: 1px solid rgba(0, 210, 255, 0.2);
             border-radius: 16px;
             padding: 30px;
             width: 100%;
-            max-width: 400px;
-            box-shadow: 0 0 30px rgba(0,210,255,0.2);
+            max-width: 380px;
+            box-shadow: 0 0 40px rgba(0, 210, 255, 0.15);
         }
     </style>
 </head>
 <body>
 
-    <!-- CONTROL DE AUTENTICACIÓN -->
-    <header>
-        <div class="logo">S<span>BACKUPS</span></div>
-        <div class="user-status">
-            <button class="auth-btn" id="loginTrigger" onclick="toggleModal(true)">Crear Cuenta / Login</button>
-            <div class="username-badge" id="userBadge">👤 Invitado</div>
+    <!-- PÁGINA 1: PORTAL PRINCIPAL (SBACKUPS) -->
+    <div id="mainPage" class="app-page">
+        <header>
+            <div class="logo">S<span>BACKUPS</span></div>
+            <div class="user-status">
+                <button class="auth-btn" id="loginTrigger" onclick="navigateTo('authPage')">Crear Cuenta / Login</button>
+                <div class="username-badge" id="userBadge">👤 Invitado</div>
+            </div>
+        </header>
+
+        <div class="hero">
+            <div class="typing-container">
+                <span class="typing-text">SBACKUPS</span>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Repositorio en la nube para v0.14.x y v0.15.10</p>
         </div>
-    </header>
 
-    <div class="hero">
-        <div class="typing-container">
-            <span class="typing-text">SBACKUPS</span>
-        </div>
-        <p style="color: var(--text-muted);">Repositorio en la nube para PocketMine-MP v0.14.x y v0.15.10</p>
-    </div>
+        <div class="dashboard">
+            <!-- PANEL DINÁMICO DE SUBIDA -->
+            <div class="glass-panel">
+                <h3>Subir Aporte / Servidor</h3>
+                <div class="form-group">
+                    <input type="text" id="postTitle" placeholder="Título o Nombre del Servidor">
+                    
+                    <select id="postCategory" onchange="toggleFormFields()">
+                        <option value="plugins">🔌 Plugins (.phar / .zip)</option>
+                        <option value="mapas">🗺️ Mapas & Mundos</option>
+                        <option value="cores">📦 Cores Estables</option>
+                        <option value="servidores">🖥️ Servidor Minecraft PE</option>
+                    </select>
 
-    <!-- DASHBOARD PRINCIPAL -->
-    <div class="dashboard">
-        
-        <!-- PANEL DE SUBIDA MEJORADO (DINÁMICO) -->
-        <div class="glass-panel">
-            <h3>Subir Nuevo Archivo</h3>
-            <div class="form-group">
-                <input type="text" id="postTitle" placeholder="Título comercial del aporte">
-                
-                <select id="postCategory">
-                    <option value="plugins">💡 Plugins (.phar / .zip)</option>
-                    <option value="mapas">🗺️ Mapas & Mundos</option>
-                    <option value="cores">📦 Cores Estables</option>
-                    <option value="skins">🎭 Skins & Capas</option>
-                </select>
+                    <!-- Campos normales de archivo -->
+                    <textarea id="postDesc" rows="3" placeholder="Descripción corta del aporte..."></textarea>
 
-                <textarea id="postDesc" rows="4" placeholder="Escribe una descripción completa del aporte, características, comandos..."></textarea>
+                    <div class="dynamic-upload-zone" id="fileZone">
+                        <span style="font-size: 1.5rem;">🚀</span><br>
+                        <span id="uploadLabel" style="font-weight: 700; color: var(--primary); font-size: 0.85rem;">Seleccionar archivo</span>
+                        <input type="file" id="uploadFile" onchange="handleFileSelect()">
+                    </div>
 
-                <!-- Zona de carga fluida -->
-                <div class="dynamic-upload-zone">
-                    <span class="upload-icon">🚀</span>
-                    <span id="uploadLabel" style="font-weight: 700; color: var(--primary);">Arrastra o selecciona archivo</span>
-                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 5px;">Máx: 50MB</p>
-                    <input type="file" id="uploadFile" onchange="handleFileSelect()">
+                    <!-- Campos especiales si elige Servidor -->
+                    <div id="serverFields" class="form-group hidden">
+                        <input type="text" id="serverIP" placeholder="IP del Servidor (ej: play.node.net)">
+                        <input type="text" id="serverPort" placeholder="Puerto (ej: 19132)" value="19132">
+                    </div>
+
+                    <button class="auth-btn" style="padding: 11px;" onclick="publishPost()">Publicar en SBACKUPS</button>
+                </div>
+            </div>
+
+            <!-- CONTENEDOR FEED -->
+            <div>
+                <div class="forum-tabs">
+                    <button class="tab-btn active" onclick="switchTab('plugins')">Plugins</button>
+                    <button class="tab-btn" onclick="switchTab('mapas')">Mapas</button>
+                    <button class="tab-btn" onclick="switchTab('cores')">Cores</button>
+                    <button class="tab-btn" onclick="switchTab('servidores')">Servidores</button>
                 </div>
 
-                <button class="auth-btn" style="padding: 12px;" onclick="publishPost()">Publicar en la Nube</button>
-            </div>
-        </div>
-
-        <!-- CONTENEDOR DE FILTROS Y APORTES -->
-        <div>
-            <div class="forum-tabs">
-                <button class="tab-btn active" onclick="switchTab('plugins')">🔌 Plugins</button>
-                <button class="tab-btn" onclick="switchTab('mapas')">🗺️ Mapas</button>
-                <button class="tab-btn" onclick="switchTab('cores')">📦 Cores</button>
-                <button class="tab-btn" onclick="switchTab('skins')">🎭 Skins</button>
-            </div>
-
-            <!-- FEED: PLUGINS -->
-            <div id="plugins" class="feed-section active">
-                <div class="archive-card">
-                    <div class="card-header">
-                        <div class="card-title">
-                            <h4>DevTools Modificado</h4>
+                <div id="plugins" class="feed-section active">
+                    <div class="archive-card">
+                        <div class="card-header">
+                            <h4>DevTools PureFix</h4>
+                            <span class="uploader-badge">Admin</span>
                         </div>
-                        <span class="uploader-badge">Autor: Admin_Legacy</span>
-                    </div>
-                    <p class="card-desc">Plugin esencial para cargar carpetas de código fuente de plugins directamente en formato de desarrollo sin necesidad de compilarlos a .phar continuamente.</p>
-                    <div class="card-footer">
-                        <span class="file-info-text">Archivo: <strong>DevTools.phar</strong> (45 KB)</span>
-                        <a href="#" class="dl-btn" download>Descargar</a>
+                        <p class="card-desc">Carga plugins en carpetas descomprimidas directamente en tu core 0.15.10.</p>
+                        <div class="card-footer">
+                            <span style="font-size:0.8rem; color:var(--text-muted);">DevTools.phar</span>
+                            <a href="#" class="dl-btn" download>Descargar</a>
+                        </div>
                     </div>
                 </div>
+
+                <div id="mapas" class="feed-section"></div>
+                <div id="cores" class="feed-section"></div>
+                
+                <!-- SECCIÓN DE SERVIDORES CON QUERY -->
+                <div id="servidores" class="feed-section">
+                    <div class="archive-card">
+                        <div class="card-header">
+                            <h4>LightStress Server Oficial</h4>
+                            <span class="status-badge status-online" id="status-sample">Online</span>
+                        </div>
+                        <p class="card-desc">IP: play.lightstress.net | Puerto: 19132</p>
+                        <div class="card-footer">
+                            <span style="font-size:0.8rem; color:var(--text-muted);" id="players-sample">Jugadores: Buscando...</span>
+                            <a href="mcpe://play.lightstress.net:19132" class="dl-btn">Conectar</a>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-
-            <!-- FEED: MAPAS -->
-            <div id="mapas" class="feed-section"></div>
-            <!-- FEED: CORES -->
-            <div id="cores" class="feed-section"></div>
-            <!-- FEED: SKINS -->
-            <div id="skins" class="feed-section"></div>
-
         </div>
     </div>
 
-    <!-- INTERFAZ MODAL DE REGISTRO / LOGIN -->
-    <div class="modal" id="authModal">
-        <div class="modal-content">
-            <h3 style="color: #fff; margin-bottom: 15px;">Crear Cuenta / Login</h3>
+    <!-- PÁGINA 2: PANTALLA COMPLETA TOTAL DE LOGIN/REGISTRO -->
+    <div id="authPage" class="auth-fullscreen hidden">
+        <div class="auth-box">
+            <h2 style="color: #fff; margin-bottom: 5px; font-size: 1.5rem;">S<span style="color:var(--primary)">BACKUPS</span></h2>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 20px;">Crea una cuenta para firmar tus archivos.</p>
+            
             <div class="form-group">
-                <input type="text" id="authUsername" placeholder="Nombre de usuario">
-                <input type="password" placeholder="Contraseña secreta">
-                <button class="auth-btn" style="padding: 10px;" onclick="saveAccount()">Guardar & Ingresar</button>
-                <button class="tab-btn" onclick="toggleModal(false)">Cancelar</button>
+                <input type="text" id="authUsername" placeholder="Nombre de usuario o Clan">
+                <input type="password" placeholder="Contraseña de seguridad">
+                
+                <button class="auth-btn" style="padding: 12px; margin-top: 5px;" onclick="executeLogin()">Registrarse e Ingresar</button>
+                <button class="tab-btn" style="padding: 10px; background: transparent;" onclick="navigateTo('mainPage')">← Volver al inicio</button>
             </div>
         </div>
     </div>
 
     <script>
-        let currentSessionUser = "Invitado";
+        let currentUser = "Invitado";
 
-        // Control visual del modal
-        function toggleModal(show) {
-            document.getElementById('authModal').style.display = show ? 'flex' : 'none';
+        // Navegación nativa entre pantallas virtuales (Simula cambio de página completo)
+        function navigateTo(pageId) {
+            document.querySelectorAll('.app-page, .auth-fullscreen').forEach(p => p.classList.add('hidden'));
+            document.getElementById(pageId).classList.remove('hidden');
+            window.scrollTo(0,0);
         }
 
-        // Registrar/Logear cuenta localmente
-        function saveAccount() {
+        function executeLogin() {
             const user = document.getElementById('authUsername').value.trim();
-            if(!user) { alert("Ingresa un usuario válido"); return; }
-            
-            currentSessionUser = user;
-            
-            // Reemplazar botón por el Badge del usuario
+            if(!user) { alert("Escribe un nombre válido"); return; }
+            currentUser = user;
+
             document.getElementById('loginTrigger').style.display = 'none';
             const badge = document.getElementById('userBadge');
-            badge.innerText = "👤 " + currentSessionUser;
+            badge.innerText = "👤 " + currentUser;
             badge.style.display = 'block';
-            
-            toggleModal(false);
+
+            navigateTo('mainPage'); // Regresa al panel principal firmado
         }
 
-        // Efecto visual dinámico al seleccionar un archivo de almacenamiento
+        function toggleFormFields() {
+            const cat = document.getElementById('postCategory').value;
+            if(cat === 'servidores') {
+                document.getElementById('fileZone').classList.add('hidden');
+                document.getElementById('serverFields').classList.remove('hidden');
+            } else {
+                document.getElementById('fileZone').classList.remove('hidden');
+                document.getElementById('serverFields').classList.add('hidden');
+            }
+        }
+
         function handleFileSelect() {
             const input = document.getElementById('uploadFile');
             const label = document.getElementById('uploadLabel');
@@ -466,60 +463,104 @@
             }
         }
 
-        // Intercambio estético de pestañas sin lag
         function switchTab(category) {
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.querySelectorAll('.feed-section').forEach(s => s.classList.remove('active'));
-            
             event.target.classList.add('active');
             document.getElementById(category).classList.add('active');
         }
 
-        // Publicar aporte dinámicamente incluyendo la firma del Autor y Descripción
+        // Publicar dinámicamente archivos o servidores con QUERY real
         function publishPost() {
             const title = document.getElementById('postTitle').value.trim();
             const cat = document.getElementById('postCategory').value;
             const desc = document.getElementById('postDesc').value.trim();
-            const fileInput = document.getElementById('uploadFile');
-
-            if(!title || !desc || fileInput.files.length === 0) {
-                alert("Completa todos los campos obligatorios y selecciona un archivo.");
-                return;
-            }
-
-            const file = fileInput.files[0];
-            const size = (file.size / 1024).toFixed(1) + " KB";
-            const fileObjectURL = URL.createObjectURL(file); // Enlace directo local seguro
+            
+            if(!title) { alert("Agrega un título descriptivo"); return; }
 
             const targetSection = document.getElementById(cat);
+            let cardHTML = '';
 
-            const newPostHTML = `
-                <div class="archive-card">
-                    <div class="card-header">
-                        <div class="card-title">
+            if(cat === 'servidores') {
+                const ip = document.getElementById('serverIP').value.trim();
+                const port = document.getElementById('serverPort').value.trim() || "19132";
+                if(!ip) { alert("Coloca la IP de tu servidor"); return; }
+
+                const uniqueId = "srv-" + Date.now();
+
+                cardHTML = `
+                    <div class="archive-card">
+                        <div class="card-header">
                             <h4>${title}</h4>
+                            <span class="status-badge status-offline" id="status-${uniqueId}">Buscando...</span>
                         </div>
-                        <span class="uploader-badge">Autor: ${currentSessionUser}</span>
+                        <p class="card-desc">IP: ${ip} | Puerto: ${port}</p>
+                        <div class="card-footer">
+                            <span style="font-size:0.8rem; color:var(--text-muted);" id="players-${uniqueId}">Jugadores: --</span>
+                            <a href="mcpe://${ip}:${port}" class="dl-btn">Conectar</a>
+                        </div>
                     </div>
-                    <p class="card-desc">${desc}</p>
-                    <div class="card-footer">
-                        <span class="file-info-text">Archivo: <strong>${file.name}</strong> (${size})</span>
-                        <a href="${fileObjectURL}" download="${file.name}" class="dl-btn">Descargar</a>
+                `;
+                targetSection.insertAdjacentHTML('afterbegin', cardHTML);
+                checkServerStatus(ip, port, uniqueId);
+            } else {
+                const fileInput = document.getElementById('uploadFile');
+                if(fileInput.files.length === 0) { alert("Selecciona un archivo válido"); return; }
+                const file = fileInput.files[0];
+                const fileURL = URL.createObjectURL(file);
+
+                cardHTML = `
+                    <div class="archive-card">
+                        <div class="card-header">
+                            <h4>${title}</h4>
+                            <span class="uploader-badge">${currentUser}</span>
+                        </div>
+                        <p class="card-desc">${desc || 'Sin descripción.'}</p>
+                        <div class="card-footer">
+                            <span style="font-size:0.8rem; color:var(--text-muted);">${file.name}</span>
+                            <a href="${fileURL}" download="${file.name}" class="dl-btn">Descargar</a>
+                        </div>
                     </div>
-                </div>
-            `;
+                `;
+                targetSection.insertAdjacentHTML('afterbegin', cardHTML);
+            }
 
-            targetSection.insertAdjacentHTML('afterbegin', newPostHTML);
-
-            // Resetear el panel dinámico
-            document.getElementById('postTitle').value = "";
-            document.getElementById('postDesc').value = "";
-            document.getElementById('uploadFile').value = "";
-            document.getElementById('uploadLabel').innerText = "Arrastra o selecciona archivo";
+            // Limpieza básica
+            document.getElementById('postTitle').value = '';
+            document.getElementById('postDesc').value = '';
+            document.getElementById('uploadFile').value = '';
+            document.getElementById('uploadLabel').innerText = "Seleccionar archivo";
             document.getElementById('uploadLabel').style.color = "var(--primary)";
-
-            alert("¡Aporte subido de forma segura a SBACKUPS!");
+            alert("¡Publicado con éxito!");
         }
+
+        // QUERY EN VIVO USANDO MCSTATUS API (Sin lag asíncrono)
+        function checkServerStatus(ip, port, id) {
+            fetch(`https://api.mcstatus.io/v2/status/bedrock/${ip}:${port}`)
+                .then(res => res.json())
+                .then(data => {
+                    const statusBadge = document.getElementById(`status-${id}`);
+                    const playersText = document.getElementById(`players-${id}`);
+                    
+                    if(data.online) {
+                        statusBadge.innerText = "Online";
+                        statusBadge.className = "status-badge status-online";
+                        playersText.innerText = `Jugadores: ${data.players.online}/${data.players.max}`;
+                    } else {
+                        statusBadge.innerText = "Offline";
+                        statusBadge.className = "status-badge status-offline";
+                        playersText.innerText = "Servidor Apagado";
+                    }
+                })
+                .catch(() => {
+                    document.getElementById(`status-${id}`).innerText = "Error Query";
+                });
+        }
+
+        // Ejecutar query de prueba al cargar la página para el servidor base
+        setTimeout(() => {
+            checkServerStatus('play.lightstress.net', '19132', 'sample');
+        }, 1000);
     </script>
 </body>
 </html>
