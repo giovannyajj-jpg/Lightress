@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeltaNodes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0b0d10;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* --- ENCABEZADO Y LOGO CORREGIDO PARA ANDROID --- */
+        .site-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            background-color: #0b0d10;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            gap: 10px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .site-logo {
+            width: 42px;
+            height: 42px;
+            object-fit: contain; /* Evita que el icono del rayo se recorte en Android */
+            border-radius: 8px;
+            display: block;
+        }
+
+        .brand-name {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 1px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #f3ba2f;
+            color: #f3ba2f;
+            padding: 7px 14px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+
+        .btn-solid {
+            background: linear-gradient(135deg, #f3ba2f, #e09d10);
+            color: #000;
+            padding: 7px 14px;
+            border-radius: 8px;
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 15px rgba(243, 186, 47, 0.3);
+            white-space: nowrap;
+        }
+
+        /* --- SECCIÓN DE PLANES --- */
+        .plans-section {
+            padding: 50px 5%;
+            text-align: center;
+        }
+
+        .plans-section h2 {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #fff;
+        }
+
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .plan-card {
+            background-color: #14171d;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .plan-card:hover {
+            border-color: #f3ba2f;
+            transform: translateY(-5px);
+        }
+
+        .plan-card h3 {
+            font-size: 1.4rem;
+            color: #f3ba2f;
+            margin-bottom: 10px;
+        }
+
+        .plan-price {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .plan-features {
+            list-style: none;
+            margin-bottom: 25px;
+            color: #aaa;
+            font-size: 0.9rem;
+            line-height: 1.8;
+        }
+
+        .btn-plan {
+            display: inline-block;
+            background: #f3ba2f;
+            color: #000;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .btn-plan:hover {
+            background: #fff;
+        }
+
+        /* --- PIE DE PÁGINA COMPACTO --- */
+        .site-footer {
+            text-align: center;
+            padding: 12px 20px;
+            background-color: #0b0d10;
+            color: #777;
+            font-size: 0.8rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer-links {
+            margin-top: 4px;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .footer-link-btn {
+            background: none;
+            border: none;
+            color: #f3ba2f;
+            cursor: pointer;
+            font-size: 0.8rem;
+            text-decoration: underline;
+            padding: 0;
+        }
+
+        .footer-link-btn:hover {
+            color: #fff;
+        }
+
+        .footer-divider {
+            color: #444;
+        }
+
+        /* --- VENTANAS MODALES (TÉRMINOS Y POLÍTICA FLOTANTES) --- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background-color: #14171d;
+            border: 1px solid #f3ba2f;
+            padding: 25px;
+            width: 100%;
+            max-width: 550px;
+            max-height: 80vh;
+            overflow-y: auto; /* Permite leer todo sin estorbar las métricas de arriba */
+            border-radius: 12px;
+            color: #fff;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+        }
+
+        .modal-content h2 {
+            color: #f3ba2f;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .modal-content p {
+            color: #bbb;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 12px;
+            right: 18px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #f3ba2f;
+            cursor: pointer;
+        }
+
+        .close-btn:hover {
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ENCABEZADO -->
+    <header class="site-header">
+        <div class="logo-container">
+            <!-- AQUÍ ESTÁ TU ICONO EXACTO -->
+            <img src="11455_4.jpg" alt="DeltaNodes Logo" class="site-logo">
+            <span class="brand-name">DELTANODES</span>
+        </div>
+        <nav class="nav-buttons">
+            <a href="#planes" class="btn-outline">VER PLANES</a>
+            <a href="#panel" class="btn-solid">
+                <svg viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                PANEL
+            </a>
+        </nav>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL Y UPTIME -->
+    <main>
+        <section style="padding: 30px 5%; text-align: center;">
+            <div style="background: #14171d; border: 1px solid rgba(255,255,255,0.08); padding: 20px; border-radius: 12px; max-width: 350px; margin: 0 auto 20px auto;">
+                <h2 style="color: #f3ba2f; font-size: 1.6rem;">99.99%</h2>
+                <p style="color: #888; font-size: 0.8rem; margin-top: 5px;">UPTIME CONTINUO</p>
+            </div>
+            <h1 style="font-size: 1.8rem; margin-bottom: 10px;">LLEVA TU SERVIDOR AL NIVEL ÉPICO</h1>
+        </section>
+
+        <!-- SECCIÓN DE PLANES -->
+        <section id="planes" class="plans-section">
+            <h2>Nuestros Planes</h2>
+            <div class="plans-grid">
+                <div class="plan-card">
+                    <h3>Plan Básico</h3>
+                    <div class="plan-price">$3.99<span>/mes</span></div>
+                    <ul class="plan-features">
+                        <li>2 GB RAM NVMe</li>
+                        <li>Protección Anti-DDoS</li>
+                        <li>Ideal para Minecraft Vanilla</li>
+                        <li>Soporte Estándar</li>
+                    </ul>
+                    <a href="#panel" class="btn-plan">Elegir Plan</a>
+                </div>
+
+                <div class="plan-card" style="border-color: #f3ba2f;">
+                    <h3>Plan Épico</h3>
+                    <div class="plan-price">$7.99<span>/mes</span></div>
+                    <ul class="plan-features">
+                        <li>6 GB RAM NVMe</li>
+                        <li>Protección Anti-DDoS Avanzada</li>
+                        <li>Plugins y Mods Ilimitados</li>
+                        <li>Soporte Prioritario</li>
+                    </ul>
+                    <a href="#panel" class="btn-plan">Elegir Plan</a>
+                </div>
+
+                <div class="plan-card">
+                    <h3>Plan Ultra</h3>
+                    <div class="plan-price">$14.99<span>/mes</span></div>
+                    <ul class="plan-features">
+                        <li>12 GB RAM NVMe</li>
+                        <li>Procesador Dedicado</li>
+                        <li>Respaldo Automático Diario</li>
+                        <li>Soporte VIP 24/7</li>
+                    </ul>
+                    <a href="#panel" class="btn-plan">Elegir Plan</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- PIE DE PÁGINA COMPACTO -->
+    <footer class="site-footer">
+        <p>&copy; 2026 DeltaNodes. Todos los derechos reservados.</p>
+        <div class="footer-links">
+            <button onclick="openModal('termsModal')" class="footer-link-btn">Términos y Condiciones</button>
+            <span class="footer-divider">|</span>
+            <button onclick="openModal('privacyModal')" class="footer-link-btn">Política de Privacidad</button>
+        </div>
+    </footer>
+
+    <!-- VENTANA FLOTANTE: TÉRMINOS Y CONDICIONES (Tus términos reales) -->
+    <div id="termsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('termsModal')">&times;</span>
+            <h2>Términos y Condiciones</h2>
+            <p>Bienvenido a DeltaNodes. Al utilizar nuestros servicios de alojamiento de servidores, aceptas cumplir con los términos de uso, políticas de rendimiento y normas de la comunidad.</p>
+            <p>Queda estrictamente prohibido el uso de los servidores para actividades maliciosas, ataques de denegación de servicio (DDoS salientes), minería no autorizada o cualquier acción que degrade el rendimiento de los nodos compartidos.</p>
+            <p>Los recursos contratados deben mantenerse dentro de los límites justos de uso de CPU y RAM especificados en cada plan.</p>
+        </div>
+    </div>
+
+    <!-- VENTANA FLOTANTE: POLÍTICA DE SEGURIDAD (Tus políticas reales) -->
+    <div id="privacyModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('privacyModal')">&times;</span>
+            <h2>Política de Seguridad</h2>
+            <p>En DeltaNodes nos comprometemos a proteger la infraestructura de tus servidores y tus datos personales bajo rigurosos estándares de seguridad informática.</p>
+            <p>Todos nuestros nodos cuentan con protección Anti-DDoS multicapa activa las 24 horas del día, los 7 días de la semana, mitigando ataques automáticamente sin afectar la latencia de juego.</p>
+            <p>Tus credenciales de acceso al panel y archivos internos se encuentran cifrados y protegidos contra accesos no autorizados.</p>
+        </div>
+    </div>
+
+    <!-- SCRIPT DE FUNCIONAMIENTO DE LAS VENTANAS -->
+    <script>
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = "flex";
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
