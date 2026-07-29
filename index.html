@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeltaNodes - Hosting de Servidores de Alto Rendimiento</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0c10;
+            --bg-card: #12161f;
+            --bg-card-hover: #1a202c;
+            --primary-amber: #ffb703;
+            --primary-gradient: linear-gradient(135deg, #ffb703 0%, #fb8500 100%);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: rgba(255, 183, 3, 0.15);
+            --border-glow: rgba(255, 183, 3, 0.4);
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(255, 183, 3, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(251, 133, 0, 0.05) 0%, transparent 40%);
+        }
+
+        /* HEADER & NAVBAR */
+        header {
+            width: 100%;
+            background: rgba(10, 12, 16, 0.85);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0.8rem 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: #fff;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            letter-spacing: 0.5px;
+        }
+
+        /* Rounded square logo fix */
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            background: var(--primary-gradient);
+            border-radius: 12px; /* Cuadradito redondeado elegante */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(251, 133, 0, 0.3);
+            flex-shrink: 0;
+        }
+
+        .logo-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: #0a0c10;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-outline {
+            border: 1px solid var(--border-color);
+            color: var(--primary-amber);
+            background: rgba(255, 183, 3, 0.05);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--primary-amber);
+            background: rgba(255, 183, 3, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: #0a0c10;
+            box-shadow: 0 4px 14px rgba(255, 183, 3, 0.3);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 6px 20px rgba(255, 183, 3, 0.5);
+            transform: translateY(-2px);
+        }
+
+        /* MAIN CONTAINER */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2.5rem 1.2rem;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            text-align: center;
+            padding: 2rem 0 3.5rem 0;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            background: rgba(255, 183, 3, 0.08);
+            border: 1px solid var(--border-color);
+            color: var(--primary-amber);
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            line-height: 1.15;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            text-transform: uppercase;
+        }
+
+        .hero h1 span {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block;
+        }
+
+        .hero p {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            max-width: 650px;
+            margin: 0 auto 2rem auto;
+        }
+
+        /* STATS GRID */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.2rem;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-glow);
+        }
+
+        .stat-val {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-amber);
+            margin-bottom: 0.3rem;
+        }
+
+        .stat-lbl {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        /* SECTION STYLES */
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.6rem;
+            color: var(--text-main);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .section-title svg {
+            fill: var(--primary-amber);
+            width: 24px;
+            height: 24px;
+        }
+
+        .legal-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1.8rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .legal-content h3 {
+            color: var(--primary-amber);
+            font-size: 1.1rem;
+            margin: 1.2rem 0 0.4rem 0;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .legal-content h3:first-child {
+            margin-top: 0;
+        }
+
+        .legal-content p, .legal-content ul {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .legal-content ul {
+            padding-left: 1.2rem;
+        }
+
+        .legal-content li {
+            margin-bottom: 0.4rem;
+        }
+
+        /* FOOTER */
+        footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            background: #07080b;
+            padding: 2.5rem 1.2rem 1.5rem 1.2rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1.2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-amber);
+        }
+
+        /* MOBILE OPTIMIZATIONS */
+        @media (max-width: 640px) {
+            .nav-container {
+                padding: 0.7rem 0.9rem;
+            }
+
+            .brand-logo {
+                font-size: 1.05rem;
+            }
+
+            .logo-icon {
+                width: 36px;
+                height: 36px;
+                border-radius: 10px;
+            }
+
+            .logo-icon svg {
+                width: 20px;
+                height: 20px;
+            }
+
+            .btn {
+                padding: 0.5rem 0.85rem;
+                font-size: 0.8rem;
+            }
+
+            .hero h1 {
+                font-size: 1.9rem;
+            }
+
+            .hero p {
+                font-size: 0.92rem;
+            }
+
+            .legal-card {
+                padding: 1.2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <header>
+        <div class="nav-container">
+            <a href="#" class="brand-logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                    </svg>
+                </div>
+                <span>DELTANODES</span>
+            </a>
+            <div class="nav-actions">
+                <a href="https://discord.gg/nuxfRuW6PN" target="_blank" class="btn btn-outline">DISCORD</a>
+                <a href="https://panel.deltanodes.xyz/" target="_blank" class="btn btn-primary">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                    </svg>
+                    PANEL
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- HERO -->
+        <section class="hero">
+            <div class="badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-5.45 9-12V5l-9-4z"/>
+                </svg>
+                Infraestructura de Alto Rendimiento
+            </div>
+            <h1>Lleva tu Servidor al<br><span>Nivel Épico</span></h1>
+            <p>Potencia sin límites, almacenamiento ultrarrápido NVMe SSD y protección AntiDDoS avanzada incluida en todos nuestros planes.</p>
+            
+            <a href="https://panel.deltanodes.xyz/" target="_blank" class="btn btn-primary" style="padding: 0.85rem 2rem; font-size: 1rem;">
+                🚀 DESPLEGAR SERVIDOR
+            </a>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-val">99.99%</div>
+                    <div class="stat-lbl">Uptime Continuo</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-val">&lt; 15ms</div>
+                    <div class="stat-lbl">Latencia Ultra Baja</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-val">NVMe SSD</div>
+                    <div class="stat-lbl">Discos de Alta Velocidad</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TERMINOS Y CONDICIONES -->
+        <section id="terminos">
+            <h2 class="section-title">
+                <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                Términos y Condiciones de Servicio
+            </h2>
+            <div class="legal-card legal-content">
+                <h3>1. Aceptación del servicio</h3>
+                <p>Al contratar cualquier servicio de DeltaNodes / MegaHosting (hosting de juegos, VPS, servidores dedicados), el usuario acepta estos Términos y Condiciones en su totalidad. Si no está de acuerdo, debe abstenerse de utilizar nuestros servicios.</p>
+
+                <h3>2. Registro y veracidad de datos</h3>
+                <p>El usuario debe proporcionar información veraz y actualizada: nombre completo, documento de identidad, correo electrónico y dirección. Nos reservamos el derecho de verificar estos datos y suspender cuentas con información falsa.</p>
+
+                <h3>3. Uso aceptable</h3>
+                <ul>
+                    <li>Está prohibido utilizar nuestros servicios para actividades ilegales, distribución de malware, ataques DDoS, minería de criptomonedas sin autorización o cualquier acción que afecte la estabilidad de la red.</li>
+                    <li>El usuario es responsable del contenido alojado en su servidor y de cumplir con las leyes locales e internacionales.</li>
+                </ul>
+
+                <h3>4. Recursos y límites</h3>
+                <p>Cada plan tiene límites específicos de CPU, RAM, almacenamiento y ancho de banda. El uso excesivo o abusivo puede resultar en suspensión temporal o permanente del servicio.</p>
+
+                <h3>5. Seguridad y respaldo</h3>
+                <ul>
+                    <li>Implementamos medidas de seguridad básicas, pero no garantizamos protección total contra ataques externos.</li>
+                    <li>El usuario es responsable de realizar sus propios respaldos. No nos hacemos responsables por pérdida de datos.</li>
+                </ul>
+
+                <h3>6. Pagos y facturación</h3>
+                <ul>
+                    <li>Todos los servicios son prepagos. El incumplimiento en el pago puede llevar a la suspensión o eliminación del servicio.</li>
+                    <li>Los precios pueden cambiar con previo aviso. Las facturas se emiten electrónicamente y deben ser pagadas en los plazos establecidos.</li>
+                </ul>
+
+                <h3>7. Cancelación y reembolsos</h3>
+                <ul>
+                    <li>El usuario puede solicitar la cancelación en cualquier momento. No se ofrecen reembolsos por períodos no utilizados, salvo en casos excepcionales evaluados por el equipo de soporte.</li>
+                    <li>Nos reservamos el derecho de cancelar servicios por incumplimiento de estas condiciones.</li>
+                </ul>
+
+                <h3>8. Soporte técnico</h3>
+                <p>El soporte se ofrece exclusivamente por los canales oficiales (<a href="https://discord.gg/nuxfRuW6PN" target="_blank" style="color: var(--primary-amber);">Discord</a>, correo, panel de cliente). No se garantiza soporte inmediato fuera del horario establecido.</p>
+
+                <h3>9. Modificaciones</h3>
+                <p>DeltaNodes / MegaHosting puede modificar estos Términos y Condiciones en cualquier momento. Las actualizaciones se comunicarán por los canales oficiales y entrarán en vigencia al momento de su publicación.</p>
+            </div>
+        </section>
+
+        <!-- POLITICAS DE PRIVACIDAD / SEGURIDAD -->
+        <section id="privacidad">
+            <h2 class="section-title">
+                <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-5.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8s0 0 0 0z"/></svg>
+                Políticas de Privacidad y Seguridad
+            </h2>
+            <div class="legal-card legal-content">
+                <h3>1. Protección de Datos del Cliente</h3>
+                <p>En DeltaNodes nos tomamos muy en serio la confidencialidad de tu información personal. Todos los datos recopilados (nombres, correos, direcciones IP) se almacenan bajo estrictos estándares de cifrado y nunca serán vendidos o cedidos a terceros sin consentimiento previo.</p>
+
+                <h3>2. Seguridad en Infraestructura y Panel</h3>
+                <p>Accedes a tu infraestructura a través de nuestro panel seguro en <a href="https://panel.deltanodes.xyz/" target="_blank" style="color: var(--primary-amber);">panel.deltanodes.xyz</a>. Implementamos autenticación de doble factor (2FA), aislamiento de contenedores/servidores y protocolos SSL/TLS de 256 bits para resguardar la comunicación con el panel.</p>
+
+                <h3>3. Protocolos Anti-DDoS y Monitoreo</h3>
+                <p>Contamos con mitigación de ataques DDoS en tiempo real a nivel de red para mantener la estabilidad de tus servidores de juegos y VPS. Los registros de red se mantienen temporalmente de forma interna únicamente para la detección y mitigación de ciberataques.</p>
+
+                <h3>4. Acceso del Personal de Soporte</h3>
+                <p>El equipo de soporte únicamente accederá a los archivos o datos de tu servidor cuando tú lo solicites mediante un ticket en nuestro <a href="https://discord.gg/nuxfRuW6PN" target="_blank" style="color: var(--primary-amber);">servidor oficial de Discord</a> o panel de cliente para solucionar fallas técnicas específicas.</p>
+            </div>
+        </section>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-links">
+            <a href="#terminos">Términos y Condiciones</a>
+            <a href="#privacidad">Políticas de Privacidad</a>
+            <a href="https://discord.gg/nuxfRuW6PN" target="_blank">Discord Oficial</a>
+            <a href="https://panel.deltanodes.xyz/" target="_blank">Panel de Control</a>
+        </div>
+        <p>&copy; 2026 DeltaNodes / MegaHosting. Todos los derechos reservados.</p>
+    </footer>
+
+</body>
+</html>
